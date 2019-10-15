@@ -6,4 +6,4 @@ class Instruction:
         self.set_flags = True if self.opcode[-1] == "s" else False
 
     def __repr__(self):
-        return f"'{self.opcode} {', '.join(str(i) for i in self.params)}'"
+        return f"{self.opcode} {', '.join(str(i) for i in self.params)}"

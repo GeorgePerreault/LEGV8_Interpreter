@@ -22,7 +22,7 @@ class Token:
 
         if val[0] == "x":
             if val[1:] == "zr":
-                self.r_number = 31 #--------HARDCODED ZERO NUMBER--------
+                self.r_number = 31 #ALERT: hardcoded zero number
                 self.type = REGISTER
                 return
             try:
