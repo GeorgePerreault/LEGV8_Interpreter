@@ -2,7 +2,6 @@ REGISTER = 1
 IMMEDIATE = 2
 MEMORY_ACCESS = 3
 LABEL = 4
-COMMA = 5
 
 class TokenException(Exception):
     pass
@@ -10,6 +9,8 @@ class TokenException(Exception):
 class Token:
     
     def __init__(self, val: str):
+        self.val = val
+
         val = val.lower()
         
         self.type = None
@@ -20,6 +21,10 @@ class Token:
             raise ValueError(f"Token(val) had a len of {len(val)}. val = {val}")
 
         if val[0] == "x":
+            if val[1:] == "zr":
+                self.r_number = 31 #--------HARDCODED ZERO NUMBER--------
+                self.type = REGISTER
+                return
             try:
                 self.r_number = int(val[1:])
                 self.type = REGISTER
@@ -35,9 +40,8 @@ class Token:
             except ValueError:
                 raise TokenException(f"Invalid immediate value: {val[1:]}")
 
-        if val == ",":
-            self.type = COMMA
-            return
-
     def __repr__(self):
-        return f"X{self.r_number}"
+        if self.type == REGISTER:
+            return f"X{self.r_number}"
+        if self.type == IMMEDIATE:
+            return f"#{self.i_val}"

@@ -9,6 +9,7 @@ class CPU:
         self.registers = [Register(i) for i in range(32)]
         self.params = None
         self.func = None
+        self.ip = 0
 
         self.OPCODE_TABLE = {
             "add": self.op_add,
@@ -29,6 +30,7 @@ class CPU:
 
     def execute(self):
         self.func(*self.params)
+        self.ip += 1
 
     def op_add(self, x, y, z):
         x.assign(y + z)
