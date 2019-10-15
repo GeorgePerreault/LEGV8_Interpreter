@@ -8,6 +8,7 @@ class ParserException(Exception):
 class LexicalAnalyzer:
     def __init__(self, file):
         self.file = open(file, "r")
+        self.die = False
 
     def get_instruction(self):
         line = self.file.readline()
@@ -17,9 +18,29 @@ class LexicalAnalyzer:
         n = line.find(" ")
         opcode = line[:n]
         line = line[n:].replace(" ", "").strip()
-        params = tuple(Token(i) for i in line.split(","))
         
-        
+        params = []
+        s = ""
+        for (i, c) in enumerate(line):
+            
+            if c == "]":
+                params.append(Token(s))
+                params.append(Token(c))
+                s = ""
+                continue
+            
+            if c == "[":
+                params.append(Token(c))
+                continue
+
+            if c == "," or i == len(line) - 1:
+                params.append(Token(s))
+                s = ""
+                continue
+
+            s += c
+
+
         try:
             guideline = INSTRUCTION_SET[opcode]
         except KeyError:
