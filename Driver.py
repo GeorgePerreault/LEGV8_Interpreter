@@ -11,7 +11,7 @@ class Driver:
         cpu = CPU()
 
         inst = lex.get_instruction()
-        cpu.set_registers(inst)
-        cpu.execute(inst)
+        cpu.decode(inst)
+        cpu.execute()
 
         print(cpu)

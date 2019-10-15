@@ -7,7 +7,7 @@ class LexicalAnalyzer:
         pass
 
     def get_instruction(self):
-        return Instruction("addi", (Token("X0"), Token("X1"), Token("#69")), INSTRUCTION_SET["add"][1])
+        return Instruction("addi", (Token("X0"), Token("X1"), Token("#69")))
 
     def get_token(self):
         pass

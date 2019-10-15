@@ -2,6 +2,7 @@ REGISTER = 1
 IMMEDIATE = 2
 MEMORY_ACCESS = 3
 LABEL = 4
+COMMA = 5
 
 class TokenException(Exception):
     pass
@@ -33,6 +34,10 @@ class Token:
                 return
             except ValueError:
                 raise TokenException(f"Invalid immediate value: {val[1:]}")
+
+        if val == ",":
+            self.type = COMMA
+            return
 
     def __repr__(self):
         return f"X{self.r_number}"
