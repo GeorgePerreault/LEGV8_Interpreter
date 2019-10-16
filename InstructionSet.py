@@ -17,4 +17,5 @@ INSTRUCTION_SET = {
     "sturw": mem,
     "sturh": mem,
     "sturb": mem,
+    "b": (LABEL,)
 }

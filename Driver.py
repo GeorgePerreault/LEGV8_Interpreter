@@ -16,24 +16,26 @@ class Driver:
             s += f"\t\t{inst}"
             print(s)
 
-    def run(self):
+    def generate_code(self):
         lex = LexicalAnalyzer(self.file)
-        cpu = CPU()
+        line_num = -1
 
         while True:
-            try:
-                inst = self.code[cpu.ip]
-            except IndexError:
-                inst = lex.get_instruction()
+            line_num += 1
+            inst = lex.get_instruction()
 
             if inst is None:
                 break
+
             self.code.append(inst)
-
             if lex.has_label:
-                self.labels[lex.get_label()] = cpu.ip
+                self.labels[lex.get_label()] = line_num
+    
+    def run(self):
+        cpu = CPU()
 
-            cpu.decode(inst)
+        for inst in self.code:
+            cpu.decode(inst, self.labels)
             cpu.execute()
 
         cpu.reg_dump()

@@ -17,6 +17,7 @@ class Token:
         self.type = None
         self.r_val = None
         self.i_val = None
+        self.l_val = None
 
         if len(val) < 1:
             raise ValueError(f"Token(val) had a len of {len(val)}. val = {val}")
@@ -48,13 +49,16 @@ class Token:
             self.type = CLOSE_SQUARE
             return
         
-        raise TokenError(f"Invalid token: {val}")
+        self.type = LABEL
+        self.l_val = val
 
     def __repr__(self):
         if self.type == REGISTER:
             return f"X{self.r_val}"
         if self.type == IMMEDIATE:
             return f"#{self.i_val}"
+        if self.type == LABEL:
+            return f"{self.l_val}"
         if self.type == OPEN_SQUARE:
             return "["
         if self.type == CLOSE_SQUARE:

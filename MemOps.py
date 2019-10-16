@@ -1,7 +1,7 @@
 class MemOp():
 
-    def __init__(self, memory, n_bytes=8):
-        self.memory = memory
+    def __init__(self, cpu, n_bytes=8):
+        self.memory = cpu.memory
         self.n_bytes = n_bytes
 
 

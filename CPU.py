@@ -1,7 +1,7 @@
 from Register import Register
 from Instruction import Instruction
 from Memory import Memory
-from Token import REGISTER, IMMEDIATE
+from Token import REGISTER, IMMEDIATE, LABEL
 from OpcodeTable import OpcodeTable
 
 class CPU:
@@ -14,9 +14,9 @@ class CPU:
         self.ip = 0
 
         self.memory = Memory()
-        self.OPCODE_TABLE = OpcodeTable(self.memory)
+        self.OPCODE_TABLE = OpcodeTable(self)
 
-    def decode(self, instruction: Instruction):
+    def decode(self, instruction: Instruction, labels):
         self.params = []
 
         for i in instruction.params:
@@ -24,12 +24,18 @@ class CPU:
                 self.params.append(self.registers[i.r_val])
             elif i.type == IMMEDIATE:
                 self.params.append(i.i_val)
+            elif i.type == LABEL:
+                try:
+                    goto = labels[i.l_val]
+                except KeyError:
+                    raise KeyError(f"Invalid label: {i.l_val}")
+                self.params.append(goto)
 
         self.op = self.OPCODE_TABLE[instruction.opcode]
 
     def execute(self):
-        self.op.execute(*self.params)
         self.ip += 1
+        self.op.execute(*self.params)
     
     def reg_dump(self, mode="dec", row_size=4):
         i = 0
