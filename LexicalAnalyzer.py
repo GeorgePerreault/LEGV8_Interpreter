@@ -13,6 +13,20 @@ class LexicalAnalyzer:
         self.file = open(file, "r")
         self.cur_pos = 0
         self.cur_line = ""
+        self.cur_label = ""
+        self.has_label = False
+
+    def get_label(self):
+        if not self.has_label:
+            raise Exception("Tried to get non-existent label")
+        self.has_label = False
+        return self.cur_label
+
+    def set_label(self, label):
+        if self.has_label:
+            raise Exception("Overwrote existing label")
+        self.has_label = True
+        self.cur_label = label
 
     def get_str(self):
         s = ""
@@ -27,7 +41,7 @@ class LexicalAnalyzer:
 
 
     def get_instruction(self):
-        self.cur_line = self.file.readline().strip()
+        self.cur_line = " ".join(self.file.readline().split())
         self.cur_pos = 0
 
         if self.cur_line == "":
@@ -36,6 +50,8 @@ class LexicalAnalyzer:
         opcode = self.get_str()
 
         if self.cur_line[self.cur_pos] == ":": #Not an opcode was actually a label
+            self.set_label(opcode)
+
             self.cur_pos += 1
 
             self.error_check(" ")
@@ -82,4 +98,6 @@ class LexicalAnalyzer:
                 params.append(Token("]"))
                 break
         
+        if self.has_label:
+            return Instruction(opcode, params, label=self.cur_label)
         return Instruction(opcode, params)

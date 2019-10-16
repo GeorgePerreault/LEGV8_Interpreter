@@ -6,6 +6,15 @@ class Driver:
     def __init__(self, file):
         self.file = file
         self.code = []
+        self.labels = {}
+
+    def code_dump(self):
+        for inst in self.code:
+            s = ""
+            if inst.label:
+                s += f"{inst.label}: "
+            s += f"\t\t{inst}"
+            print(s)
 
     def run(self):
         lex = LexicalAnalyzer(self.file)
@@ -21,8 +30,11 @@ class Driver:
                 break
             self.code.append(inst)
 
+            if lex.has_label:
+                self.labels[lex.get_label()] = cpu.ip
+
             cpu.decode(inst)
             cpu.execute()
 
         print(cpu)
-        print(self.code)
+        self.code_dump()
