@@ -10,7 +10,13 @@ class OpcodeTable():
             "adds": Add(s=True),
             "addis": Add(i=True, s=True),
             "ldur": Load(memory),
-            "stur": Store(memory) 
+            "ldurw": Load(memory, n_bytes=4),
+            "ldurh": Load(memory, n_bytes=2),
+            "ldurb": Load(memory, n_bytes=1),
+            "stur": Store(memory),
+            "sturw": Store(memory, n_bytes=4),
+            "sturh": Store(memory, n_bytes=2),
+            "sturb": Store(memory, n_bytes=1),
         }
 
     def __getitem__(self, i):

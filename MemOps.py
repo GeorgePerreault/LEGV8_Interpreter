@@ -17,6 +17,7 @@ class Load(MemOp):
         res |= self.memory[low + self.n_bytes - 1]
 
         x.assign(res)
+        return res
 
 
 class Store(MemOp):

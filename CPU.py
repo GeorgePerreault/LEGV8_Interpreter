@@ -2,7 +2,7 @@ from Register import Register
 from Instruction import Instruction
 from Memory import Memory
 from Token import REGISTER, IMMEDIATE
-from opcode_table import OpcodeTable
+from OpcodeTable import OpcodeTable
 
 class CPU:
 

@@ -1,3 +1,4 @@
 [
-  "tests/test_all.py::test_adds1"
+  "test_all.py::test_tables",
+  "test_all.py::test_memory"
 ]
