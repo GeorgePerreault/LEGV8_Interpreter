@@ -76,9 +76,9 @@ class CPU:
             if mode == "dec":
                 s += f"{c_reg.value:010}"
             elif mode == "hex":
-                s += f"{c_reg.value:08x}"
+                s += f"0x{c_reg.value:08x}"
             elif mode == "bin":
-                s += f"{c_reg.value:032b}"
+                s += f"0b{c_reg.value:032b}"
 
             row_counter += 1
             i += 1
