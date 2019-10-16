@@ -5,7 +5,7 @@ from instruction_set import INSTRUCTION_SET
 
 ALLOWED_CHARS = {*ascii_letters, "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "#"}
 
-class ParserException(Exception):
+class ParserError(Exception):
     pass
 
 class LexicalAnalyzer:
@@ -37,7 +37,7 @@ class LexicalAnalyzer:
 
     def error_check(self, match):
         if self.cur_line[self.cur_pos] != match:
-            raise ParserException(f"Invalid syntax at: {self.cur_line}. Expected {match} but got {self.cur_line[self.cur_pos]}")
+            raise ParserError(f"Invalid syntax at: {self.cur_line}. Expected {match} but got {self.cur_line[self.cur_pos]}")
 
 
     def get_instruction(self):
@@ -62,7 +62,7 @@ class LexicalAnalyzer:
         try:
             expected_params = INSTRUCTION_SET[opcode]
         except KeyError:
-            raise ParserException(f"Invalid opcode: {opcode}")
+            raise ParserError(f"Invalid opcode: {opcode}")
 
 
         self.error_check(" ")
@@ -80,7 +80,7 @@ class LexicalAnalyzer:
             t = Token(s)
 
             if len(params) >= len(expected_params) or t.type != expected_params[len(params)]:
-                raise ParserException(f"Invalid parameter for '{opcode}': {t}")
+                raise ParserError(f"Invalid parameter for '{opcode}': {t}")
 
             params.append(t)
 
@@ -92,7 +92,7 @@ class LexicalAnalyzer:
                 self.cur_pos += 1
                 self.error_check(" ")
                 self.cur_pos += 1
-            except ParserException as e:
+            except ParserError as e:
                 if self.cur_line[self.cur_pos] != "]":
                     raise e
                 params.append(Token("]"))

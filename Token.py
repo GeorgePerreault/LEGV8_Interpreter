@@ -4,7 +4,7 @@ LABEL = 3
 OPEN_SQUARE = 4
 CLOSE_SQUARE = 5
 
-class TokenException(Exception):
+class TokenError(Exception):
     pass
 
 class Token:
@@ -39,7 +39,7 @@ class Token:
                 self.type = IMMEDIATE
                 return
             except ValueError:
-                raise TokenException(f"Invalid immediate value: {val[1:]}")
+                raise TokenError(f"Invalid immediate value: {val[1:]}")
 
         if val == "[":
             self.type = OPEN_SQUARE
@@ -48,7 +48,7 @@ class Token:
             self.type = CLOSE_SQUARE
             return
         
-        raise TokenException(f"Invalid token: {val}")
+        raise TokenError(f"Invalid token: {val}")
 
     def __repr__(self):
         if self.type == REGISTER:

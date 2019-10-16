@@ -36,5 +36,5 @@ class Driver:
             cpu.decode(inst)
             cpu.execute()
 
-        print(cpu)
+        cpu.reg_dump()
         self.code_dump()

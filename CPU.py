@@ -7,7 +7,7 @@ class CPU:
 
 
     def __init__(self):
-        self.registers = [Register(i) for i in range(32)]
+        self.registers = [Register(i) for i in range(32)] #ALERT: Hardcoded number of registers
         self.params = None
         self.func = None
         self.ip = 0
@@ -63,6 +63,34 @@ class CPU:
 
     def op_store_8(self, x, y, z):
         self.op_store(x, y, z, 8)
+
+    def reg_dump(self, mode="dec", row_size=4):
+        i = 0
+        row_counter = 0
+        s = ""
+
+        while i < len(self.registers):
+            c_reg = self.registers[i]
+
+            s += f"X{c_reg.number:02}: "
+            if mode == "dec":
+                s += f"{c_reg.value:010}"
+            elif mode == "hex":
+                s += f"{c_reg.value:08x}"
+            elif mode == "bin":
+                s += f"{c_reg.value:032b}"
+
+            row_counter += 1
+            i += 1
+
+            if row_counter == row_size:
+                row_counter = 0
+                s += "\n"
+            else:
+                s += "\t"
+
+        print(s)
+            
 
     def __repr__(self):
         return str(self.registers)
