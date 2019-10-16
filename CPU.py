@@ -42,17 +42,21 @@ class CPU:
     
     def op_load(self, x, y, z, n):
         res = 0
-        for i in range(y + z, y + z + n):
+        low = y + z
+        
+        for i in range(low, low + n - 1):
             res |= self.memory[i]
-            print(i)
             res <<= 8
+        res |= self.memory[low + n - 1]
         x.assign(res)
 
     def op_store(self, x, y, z, n):
-        res = x.value
-        for i in range(y + z, y + z + n):
-            self.memory[i] = n & 0xFF
-            res >>= 8
+        val = x.value
+        low = y + z
+
+        for i in range(low, low + n)[::-1]:
+            self.memory[i] = val & 0xFF
+            val >>= 8
 
     def op_load_8(self, x, y, z):
         self.op_load(x, y, z, 8)
