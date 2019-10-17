@@ -1,7 +1,7 @@
 from Register import Register
 from Instruction import Instruction
 from Memory import Memory
-from Token import REGISTER, IMMEDIATE, LABEL
+from InstructionSet import TTS
 from OpcodeTable import OpcodeTable
 
 class CPU:
@@ -20,11 +20,11 @@ class CPU:
         self.params = []
 
         for i in instruction.params:
-            if i.type == REGISTER:
+            if i.type == TTS.REGISTER:
                 self.params.append(self.registers[i.r_val])
-            elif i.type == IMMEDIATE:
+            elif i.type == TTS.IMMEDIATE:
                 self.params.append(i.i_val)
-            elif i.type == LABEL:
+            elif i.type == TTS.LABEL:
                 try:
                     goto = labels[i.l_val]
                 except KeyError:

@@ -1,6 +1,6 @@
 from string import ascii_letters
 from Instruction import Instruction
-from Token import Token, TOKEN_TYPE_NAMES, COMMA, REGISTER, IMMEDIATE, LABEL, OPEN_SQUARE, CLOSE_SQUARE, HASH
+from Token import Token, TOKEN_TYPE_NAMES, TTS
 from InstructionSet import INSTRUCTION_SET
 
 ALLOWED_CHARS = {*ascii_letters, "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"}
@@ -66,7 +66,7 @@ class LexicalAnalyzer:
 
         for expec in expected_params:
             method = self.get_one
-            if expec in (REGISTER, IMMEDIATE, LABEL):
+            if expec in (TTS.REGISTER, TTS.IMMEDIATE, TTS.LABEL):
                 method = self.get_str
 
             t = Token(method())
@@ -74,7 +74,7 @@ class LexicalAnalyzer:
                 raise ParserError(f"Expected {TOKEN_TYPE_NAMES[expec]} but got: {t} of type {TOKEN_TYPE_NAMES[t.type]}")
             params.append(t)
 
-            if expec == COMMA:
+            if expec == TTS.COMMA:
                 self.error_check(" ")
 
         return params

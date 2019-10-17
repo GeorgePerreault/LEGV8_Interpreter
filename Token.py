@@ -1,22 +1,6 @@
 from Register import ZERO_REG, LINK_REG, FRAME_POINTER, STACK_POINTER
 
-COMMA = 0
-REGISTER = 1
-IMMEDIATE = 2
-LABEL = 3
-OPEN_SQUARE = 4
-CLOSE_SQUARE = 5
-HASH = 6
-
-TOKEN_TYPE_NAMES = (
-    "COMMA",
-    "REGISTER",
-    "IMMEDIATE",
-    "LABEL",
-    "OPEN_SQUARE",
-    "CLOSE_SQUARE",
-    "HASH"
-)
+from InstructionSet import TOKEN_TYPE_NAMES, TTS
 
 class TokenError(Exception):
     pass
@@ -39,17 +23,17 @@ class Token:
         if val[0] == "x":
             if val[1:] == "zr":
                 self.r_val = ZERO_REG
-                self.type = REGISTER
+                self.type = TTS.REGISTER
                 return
             try:
                 self.r_val = int(val[1:])
-                self.type = REGISTER
+                self.type = TTS.REGISTER
                 return
             except ValueError:
                 pass
 
         if val in ["lr", "fp", "sp"]:
-            self.type = REGISTER
+            self.type = TTS.REGISTER
             if val == "lr":
                 self.r_val = LINK_REG
             elif val == "fp":
@@ -61,40 +45,40 @@ class Token:
         if val[0] in ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]:
             try:
                 self.i_val = int(val)
-                self.type = IMMEDIATE
+                self.type = TTS.IMMEDIATE
                 return
             except ValueError:
                 raise TokenError(f"Invalid immediate value: {val[1:]}")
 
         if val == "[":
-            self.type = OPEN_SQUARE
+            self.type = TTS.OPEN_SQUARE
             return
         if val == "]":
-            self.type = CLOSE_SQUARE
+            self.type = TTS.CLOSE_SQUARE
             return
         if val == ",":
-            self.type = COMMA
+            self.type = TTS.COMMA
             return
         if val == "#":
-            self.type = HASH
+            self.type = TTS.HASH
             return
 
-        self.type = LABEL
+        self.type = TTS.LABEL
         self.l_val = val
 
     def __repr__(self):
-        if self.type == REGISTER:
+        if self.type == TTS.REGISTER:
             return f"X{self.r_val}"
-        if self.type == IMMEDIATE:
+        if self.type == TTS.IMMEDIATE:
             return f"{self.i_val}"
-        if self.type == LABEL:
+        if self.type == TTS.LABEL:
             return f"{self.l_val}"
-        if self.type == OPEN_SQUARE:
+        if self.type == TTS.OPEN_SQUARE:
             return "["
-        if self.type == CLOSE_SQUARE:
+        if self.type == TTS.CLOSE_SQUARE:
             return "]"
-        if self.type == COMMA:
+        if self.type == TTS.COMMA:
             return ","
-        if self.type == HASH:
+        if self.type == TTS.HASH:
             return "#"
         return NotImplemented

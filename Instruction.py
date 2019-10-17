@@ -1,4 +1,4 @@
-from Token import COMMA
+from InstructionSet import TTS
 
 class Instruction:
     
@@ -13,7 +13,7 @@ class Instruction:
 
         for param in self.params:
             s += f"{param}"
-            if param.type == COMMA:
+            if param.type == TTS.COMMA:
                 s += " "
         return s
 
