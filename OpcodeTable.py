@@ -7,15 +7,15 @@ class OpcodeTable():
 
     def __init__(self, cpu):
         self.OPCODE_TABLE = {
-            "add": Add(cpu),
-            "addi": Add(cpu),
-            "adds": Add(cpu, s=True),
-            "addis": Add(cpu, s=True),
+            "add": Add(),
+            "addi": Add(),
+            "adds": Add(s=True),
+            "addis": Add(s=True),
 
-            "sub": Sub(cpu),
-            "subi": Sub(cpu),
-            "subs": Sub(cpu, s=True),
-            "subis": Sub(cpu, s=True),
+            "sub": Sub(),
+            "subi": Sub(),
+            "subs": Sub(s=True),
+            "subis": Sub(s=True),
 
             "and": And(),
             "andi": And(),

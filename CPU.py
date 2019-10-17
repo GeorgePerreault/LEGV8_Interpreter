@@ -4,6 +4,7 @@ from Memory import Memory
 from InstructionSet import TTS
 from OpcodeTable import OpcodeTable
 from Flags import Flags
+from MathOps import Add, Sub
 
 class CPU:
 
@@ -21,8 +22,7 @@ class CPU:
 
     def set_flags(self):
         self.saved_flags.set_flags(self.tmp_flags)
-        print(self.saved_flags)
-
+    
     def decode(self, instruction: Instruction, labels):
         self.params = []
 
@@ -49,6 +49,10 @@ class CPU:
             self.tmp_flags.overflow = ret.overflow
             self.tmp_flags.negative = ret.negative
             self.tmp_flags.zero = ret.zero
+
+        if type(self.op) is Add or type(self.op) is Sub:
+            if self.op.s:
+                self.set_flags()
     
     def reg_dump(self, mode="dec", row_size=4):
         i = 0

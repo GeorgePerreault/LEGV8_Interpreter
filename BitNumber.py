@@ -12,7 +12,7 @@ class BitNumber:
 
     def __getitem__(self, i):
         if i < 0:
-            i = 63 - i
+            i = 64 + i
         return (self.bits >> i) % 2
 
     def __iter__(self):
@@ -56,8 +56,11 @@ class BitNumber:
 
         res = 0
         bit_num = 0
+
         for (i, j) in zip(self, other):
             n = i + j + c
+            
+            last_c = c
             c = 1 if n > 1 else 0
             res |= (1 << bit_num) if n % 2 == 1 else 0
 
@@ -66,7 +69,7 @@ class BitNumber:
         ret = BitNumber(res)
 
         ret.carry = c
-        ret.overflow = 1 if (self[-1] == other[-1] and ret[-1] != self[-1]) else 0
+        ret.overflow = 1 if last_c != c else 0
         ret.negative = ret[-1]
         ret.zero = 1 if ret == 0 else 0
 
