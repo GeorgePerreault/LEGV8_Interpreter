@@ -1,13 +1,17 @@
+ZERO_REG = 31
+LINK_REG = 30
+FRAME_POINTER = 29
+STACK_POINTER = 28
+
+
 class Register:
-    ZERO_REG = 31
-    LINK_REG = 30
 
     def __init__(self, number: int):
         self.number = number
         self.value = 0
     
     def assign(self, value):
-        self.value = (value if self.number != Register.ZERO_REG else 0)
+        self.value = (value if self.number != ZERO_REG else 0)
 
     def __repr__(self):
         return f"X{self.number}:{self.value}"
