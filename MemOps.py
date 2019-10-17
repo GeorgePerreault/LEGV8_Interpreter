@@ -1,3 +1,5 @@
+from BitNumber import BitNumber
+
 class MemOp():
 
     def __init__(self, cpu, n_bytes=8):
@@ -8,8 +10,8 @@ class MemOp():
 class Load(MemOp):
 
     def execute(self, x, y, z):
-        res = 0
-        low = y + z
+        res = BitNumber()
+        low = int(y + z)
         
         for i in range(low, low + self.n_bytes - 1):
             res |= self.memory[i]
@@ -24,7 +26,7 @@ class Store(MemOp):
 
     def execute(self, x, y, z):
         val = x.value
-        low = y + z
+        low = int(y + z)
 
         for i in range(low, low + self.n_bytes)[::-1]:
             self.memory[i] = val & 0xFF

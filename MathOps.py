@@ -19,3 +19,5 @@ class Sub(MathOp):
 
     def execute(self, x, y, z):
         x.assign(y - z)
+        if self.s:
+            self.cpu.set_flags(self.get_flags())

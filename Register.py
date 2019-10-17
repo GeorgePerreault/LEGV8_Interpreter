@@ -13,10 +13,12 @@ class Register:
         self.value = BitNumber()
     
     def assign(self, value):
-        value &= 0xFFFFFFFFFFFFFFFF
         if self.number == ZERO_REG:
             return
-        self.value = value
+        if type(value) is int:
+            self.value = BitNumber(value)
+        else:
+            self.value = value
 
     def __repr__(self):
         return f"X{self.number}:{self.value}"

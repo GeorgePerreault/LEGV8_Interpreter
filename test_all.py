@@ -4,10 +4,11 @@ from InstructionSet import INSTRUCTION_SET
 from OpcodeTable import OpcodeTable
 from Memory import Memory
 from MemOps import Load, Store
-
+from BitNumber import BitNumber
+from CPU import CPU
 
 def all_in_both():
-    opct = OpcodeTable(None)
+    opct = OpcodeTable(CPU())
 
     if len(INSTRUCTION_SET) != len(opct.OPCODE_TABLE):
         return False
@@ -15,7 +16,6 @@ def all_in_both():
     for opcode in INSTRUCTION_SET.keys():
         if opcode not in opct.OPCODE_TABLE:
             return False
-
     return True
 
 def mem_swap(v, e, n_bytes=8):
@@ -34,6 +34,21 @@ def mem_swap(v, e, n_bytes=8):
     res = ld.execute(x, 0, 0)
 
     return res == e
+
+
+def test_bits():
+    x = BitNumber(1)
+    assert x - x == 0
+    y = BitNumber(1)
+    assert x == y
+    assert x - y == 0
+    assert x + y == 2
+    assert x + y == BitNumber(2)
+    
+    x = BitNumber(16)
+    y = BitNumber(8)
+    assert x - y == 8
+    assert (x + y + y) == 0x20
 
 def test_tables():
     assert all_in_both()
