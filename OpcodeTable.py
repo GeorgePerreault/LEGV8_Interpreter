@@ -40,8 +40,8 @@ class OpcodeTable():
             "sturb": Store(cpu, n_bytes=1),
 
             "b": BranchOp(cpu),
-            "cbz": BranchOp(cpu, condition=lambda x: x == 0),
-            "cbnz": BranchOp(cpu, condition=lambda x: x != 0),
+            "cbz": CondBranch(cpu, condition=lambda x: x == 0),
+            "cbnz": CondBranch(cpu, condition=lambda x: x != 0),
 
             "bl": None,
             "br": None,

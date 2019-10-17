@@ -1,17 +1,24 @@
 class BranchOp():
 
-    def __init__(self, cpu, condition=lambda : True):
+    def __init__(self, cpu):
+        self.cpu = cpu
+
+    def branch_on(self):
+        return True
+
+    def execute(self, goto):
+        if self.branch_on():
+            self.cpu.ip = goto
+
+class CondBranch(BranchOp):
+
+    def __init__(self, cpu, condition=None):
         self.cpu = cpu
         self.condition = condition
 
-    def branch_on(self, *params):
-        return self.condition(*params)
-
-    def execute(self, goto, *params):
-        if self.branch_on(*params):
-            self.cpu.ip = goto
-
-
+    def execute(self, goto, reg):
+        if self.condition(reg):
+            self.cpu.ip = int(reg.value)
 
 class BranchEQ(BranchOp):
     def branch_on(self):
