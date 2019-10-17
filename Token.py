@@ -1,12 +1,22 @@
 from Register import ZERO_REG, LINK_REG, FRAME_POINTER, STACK_POINTER
 
+COMMA = 0
 REGISTER = 1
 IMMEDIATE = 2
 LABEL = 3
 OPEN_SQUARE = 4
 CLOSE_SQUARE = 5
-REGISTER_NC = 6
-IMMEDIATE_NH = 7
+HASH = 6
+
+TOKEN_TYPE_NAMES = (
+    "COMMA",
+    "REGISTER",
+    "IMMEDIATE",
+    "LABEL",
+    "OPEN_SQUARE",
+    "CLOSE_SQUARE",
+    "HASH"
+)
 
 class TokenError(Exception):
     pass
@@ -62,19 +72,29 @@ class Token:
         if val == "]":
             self.type = CLOSE_SQUARE
             return
-        
+        if val == ",":
+            self.type = COMMA
+            return
+        if val == "#":
+            self.type = HASH
+            return
+
         self.type = LABEL
         self.l_val = val
 
     def __repr__(self):
-        if self.type == REGISTER or self.type == REGISTER_NC:
+        if self.type == REGISTER:
             return f"X{self.r_val}"
         if self.type == IMMEDIATE:
-            return f"#{self.i_val}"
+            return f"{self.i_val}"
         if self.type == LABEL:
             return f"{self.l_val}"
         if self.type == OPEN_SQUARE:
             return "["
         if self.type == CLOSE_SQUARE:
             return "]"
+        if self.type == COMMA:
+            return ","
+        if self.type == HASH:
+            return "#"
         return NotImplemented

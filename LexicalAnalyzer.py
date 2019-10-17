@@ -1,6 +1,6 @@
 from string import ascii_letters
 from Instruction import Instruction
-from Token import Token, REGISTER, IMMEDIATE, LABEL, OPEN_SQUARE, CLOSE_SQUARE, REGISTER_NC, IMMEDIATE_NH
+from Token import Token, TOKEN_TYPE_NAMES, COMMA, REGISTER, IMMEDIATE, LABEL, OPEN_SQUARE, CLOSE_SQUARE, HASH
 from InstructionSet import INSTRUCTION_SET
 
 ALLOWED_CHARS = {*ascii_letters, "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"}
@@ -49,12 +49,12 @@ class LexicalAnalyzer:
     
     def get_opcode(self):
         opcode = self.get_str()
-        print(opcode)
         if self.cur_line[self.cur_pos] == ":": #Not an opcode was actually a label
-            self.set_label(opcode)
             self.cur_pos += 1
-
+            
+            self.set_label(opcode)
             self.error_check(" ")
+
             opcode = self.get_str()
 
         return opcode
@@ -63,72 +63,36 @@ class LexicalAnalyzer:
     def get_params(self, expected_params):
         params = []
         s = ""
+
         for expec in expected_params:
-            if expec == REGISTER:
-                t = Token(self.get_str())
-                if t.type != REGISTER:
-                    raise ParserError(f"Expected register but got: {t}")
+            method = self.get_one
+            if expec in (REGISTER, IMMEDIATE, LABEL):
+                method = self.get_str
 
-                params.append(t)
-                self.error_check(",")
+            t = Token(method())
+            if t.type != expec:
+                raise ParserError(f"Expected {TOKEN_TYPE_NAMES[expec]} but got: {t} of type {TOKEN_TYPE_NAMES[t.type]}")
+            params.append(t)
+
+            if expec == COMMA:
                 self.error_check(" ")
-
-            if expec == REGISTER_NC:
-                t = Token(self.get_str())
-                if t.type != REGISTER:
-                    raise ParserError(f"Expected register but got: {t}")
-
-                params.append(t)
-
-
-            elif expec == IMMEDIATE:
-                self.error_check("#")
-
-                t = Token(self.get_str())
-                if t.type != IMMEDIATE:
-                    raise ParserError(f"Expected immediate but got: {t}")
-
-                params.append(t)
-
-            elif expec == LABEL:
-                t = Token(self.get_str())
-                if t.type != LABEL:
-                    raise ParserError(f"Expected label but got: {t}")
-
-                params.append(t)
-
-            elif expec == OPEN_SQUARE:
-                t = Token(self.get_one())
-                if t.type != OPEN_SQUARE:
-                    raise ParserError(f"Expected open square-bracket but got: {t}")
-
-                params.append(t)
-
-            elif expec == CLOSE_SQUARE:
-                t = Token(self.get_one())
-                if t.type != CLOSE_SQUARE:
-                    raise ParserError(f"Expected close square-bracket but got: {t}")
-
-                params.append(t)
 
         return params
 
     def get_instruction(self):
-        self.cur_line = " ".join(self.file.readline().split())
+        self.cur_line = " ".join(self.file.readline().split()) #Removes excess spaces
         self.cur_pos = 0
 
         if self.cur_line == "":
             return None
 
         opcode = self.get_opcode()
+        self.error_check(" ")
 
         try:
             expected_params = INSTRUCTION_SET[opcode]
         except KeyError:
             raise ParserError(f"Invalid opcode: {opcode}")
-
-
-        self.error_check(" ")
 
         params = self.get_params(expected_params)
         

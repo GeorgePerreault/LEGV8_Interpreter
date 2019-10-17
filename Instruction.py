@@ -1,4 +1,4 @@
-from Token import OPEN_SQUARE, CLOSE_SQUARE
+from Token import COMMA
 
 class Instruction:
     
@@ -12,17 +12,10 @@ class Instruction:
         s = f"{self.opcode} "
 
         for param in self.params:
-            if param.type == OPEN_SQUARE:
-                s += f"{param}"
-            elif param.type == CLOSE_SQUARE:
-                s = s[:-2]
-                s += f"{param}  "
-            else:
-                s += f"{param}, "
-        return s[:-2]
+            s += f"{param}"
+            if param.type == COMMA:
+                s += " "
+        return s
 
     def __repr__(self):
-        try:
-            return self.build_str()
-        except IndexError:
-            return f"{self.opcode} {self.params}"
+        return self.build_str()
