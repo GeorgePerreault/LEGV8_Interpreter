@@ -38,5 +38,5 @@ class Driver:
             cpu.decode(inst, self.labels)
             cpu.execute()
 
-        cpu.reg_dump()
+        cpu.reg_dump(mode="hex")
         self.code_dump()

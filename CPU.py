@@ -6,12 +6,24 @@ from OpcodeTable import OpcodeTable
 
 class CPU:
 
+    class Flags:
+
+        def __init__(self):
+            self.carry = 0
+            self.overflow = 0
+            self.negative = 0
+            self.zero = 0
+
+        def set_flags(self, flags):
+            self.carry, self.overflow, self.negative, self.zero = flags
 
     def __init__(self):
         self.registers = [Register(i) for i in range(32)] #ALERT: Hardcoded number of registers
         self.params = None
         self.op = None
         self.ip = 0
+
+        self.flags = CPU.Flags()
 
         self.memory = Memory()
         self.OPCODE_TABLE = OpcodeTable(self)
@@ -47,11 +59,11 @@ class CPU:
 
             s += f"X{c_reg.number:02}: "
             if mode == "dec":
-                s += f"{c_reg.value:010}"
+                s += f"{c_reg.value:020}"
             elif mode == "hex":
-                s += f"0x{c_reg.value:08x}"
+                s += f"0x{c_reg.value:016x}"
             elif mode == "bin":
-                s += f"0b{c_reg.value:032b}"
+                s += f"0b{c_reg.value:064b}"
 
             row_counter += 1
             i += 1

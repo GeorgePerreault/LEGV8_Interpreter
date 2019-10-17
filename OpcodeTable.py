@@ -1,4 +1,4 @@
-from MathOps import Add
+from MathOps import Add, Sub
 from MemOps import Load, Store
 from BranchOps import Branch
 
@@ -6,10 +6,14 @@ class OpcodeTable():
 
     def __init__(self, cpu):
         self.OPCODE_TABLE = {
-            "add": Add(),
-            "addi": Add(i=True),
-            "adds": Add(s=True),
-            "addis": Add(i=True, s=True),
+            "add": Add(cpu),
+            "addi": Add(cpu),
+            "adds": Add(cpu, s=True),
+            "addis": Add(cpu, s=True),
+            "sub": Sub(cpu),
+            "subi": Sub(cpu),
+            "subs": Sub(cpu, s=True),
+            "subis": Sub(cpu, s=True),
             "ldur": Load(cpu),
             "ldurw": Load(cpu, n_bytes=4),
             "ldurh": Load(cpu, n_bytes=2),
