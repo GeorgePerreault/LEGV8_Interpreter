@@ -34,8 +34,8 @@ class Driver:
     def run(self):
         cpu = CPU()
 
-        for inst in self.code:
-            cpu.decode(inst, self.labels)
+        while cpu.ip < len(self.code):
+            cpu.decode(self.code[cpu.ip], self.labels)
             cpu.execute()
 
         cpu.reg_dump(mode="hex")

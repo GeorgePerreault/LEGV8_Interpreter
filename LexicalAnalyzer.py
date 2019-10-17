@@ -3,7 +3,7 @@ from Instruction import Instruction
 from Token import Token, TOKEN_TYPE_NAMES, TTS
 from InstructionSet import INSTRUCTION_SET
 
-ALLOWED_CHARS = {*ascii_letters, "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"}
+ALLOWED_CHARS = {*ascii_letters, "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."}
 
 class ParserError(Exception):
     pass
