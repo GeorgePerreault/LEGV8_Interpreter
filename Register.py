@@ -10,9 +10,7 @@ class Register:
 
     def __init__(self, number: int):
         self.number = number
-        self.value = BitNumber(val=1)
-        print(self.value)
-        exit()
+        self.value = BitNumber()
     
     def assign(self, value):
         value &= 0xFFFFFFFFFFFFFFFF
