@@ -25,11 +25,6 @@ class BitNumber:
             count += 1
             n >>= 1
 
-    def __or__(self, other):
-        if type(other) is int:
-            return BitNumber(self.bits | other)
-        return BitNumber(self.bits | other.bits)
-
     def __lshift__(self, other):
         if type(other) is int:
             return BitNumber(self.bits << other)
@@ -43,7 +38,17 @@ class BitNumber:
     def __and__(self, other):
         if type(other) is int:
             return BitNumber(self.bits & other)
-        return BitNumber(self.bits & other.n_bits)
+        return BitNumber(self.bits & other.bits)
+
+    def __or__(self, other):
+        if type(other) is int:
+            return BitNumber(self.bits | other)
+        return BitNumber(self.bits | other.bits)
+
+    def __xor__(self, other):
+        if type(other) is int:
+            return BitNumber(self.bits ^ other)
+        return BitNumber(self.bits ^ other.bits)
 
     def __add__(self, other, c=0):
         if type(other) is int:

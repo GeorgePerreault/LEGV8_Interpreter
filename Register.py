@@ -34,3 +34,21 @@ class Register:
             return self.value - other.value
         elif type(other) is int:
             return self.value - BitNumber(other)
+
+    def __and__(self, other):
+        if type(other) is Register:
+            return self.value & other.value
+        elif type(other) is int:
+            return self.value & BitNumber(other)
+
+    def __or__(self, other):
+        if type(other) is Register:
+            return self.value | other.value
+        elif type(other) is int:
+            return self.value | BitNumber(other)
+
+    def __xor__(self, other):
+        if type(other) is Register:
+            return self.value ^ other.value
+        elif type(other) is int:
+            return self.value ^ BitNumber(other)

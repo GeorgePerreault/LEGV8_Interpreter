@@ -3,19 +3,9 @@ from Instruction import Instruction
 from Memory import Memory
 from InstructionSet import TTS
 from OpcodeTable import OpcodeTable
+from Flags import Flags
 
 class CPU:
-
-    class Flags:
-
-        def __init__(self):
-            self.carry = 0
-            self.overflow = 0
-            self.negative = 0
-            self.zero = 0
-
-        def set_flags(self, flags):
-            self.carry, self.overflow, self.negative, self.zero = flags
 
     def __init__(self):
         self.registers = [Register(i) for i in range(32)] #ALERT: Hardcoded number of registers
@@ -23,10 +13,15 @@ class CPU:
         self.op = None
         self.ip = 0
 
-        self.flags = CPU.Flags()
+        self.tmp_flags = Flags()
+        self.saved_flags = Flags()
 
         self.memory = Memory()
         self.OPCODE_TABLE = OpcodeTable(self)
+
+    def set_flags(self):
+        self.saved_flags.set_flags(self.tmp_flags)
+        print(self.saved_flags)
 
     def decode(self, instruction: Instruction, labels):
         self.params = []
@@ -47,7 +42,13 @@ class CPU:
 
     def execute(self):
         self.ip += 1
-        self.op.execute(*self.params)
+        ret = self.op.execute(*self.params)
+        
+        if ret:
+            self.tmp_flags.carry = ret.carry
+            self.tmp_flags.overflow = ret.overflow
+            self.tmp_flags.negative = ret.negative
+            self.tmp_flags.zero = ret.zero
     
     def reg_dump(self, mode="dec", row_size=4):
         i = 0
