@@ -18,7 +18,7 @@ class CondBranch(BranchOp):
 
     def execute(self, goto, reg):
         if self.condition(reg):
-            self.cpu.ip = int(reg.value)
+            self.cpu.ip = goto
 
 class BranchEQ(BranchOp):
     def branch_on(self):
