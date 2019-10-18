@@ -16,7 +16,7 @@ class CondBranch(BranchOp):
         self.cpu = cpu
         self.condition = condition
 
-    def execute(self, goto, reg):
+    def execute(self, reg, goto):
         if self.condition(reg):
             self.cpu.ip = goto
 

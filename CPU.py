@@ -23,7 +23,11 @@ class CPU:
     def set_flags(self):
         self.saved_flags.set_flags(self.tmp_flags)
     
-    def decode(self, instruction: Instruction, labels):
+    def decode(self, instruction, labels):
+        if not instruction.opcode:
+            self.params = None
+            self.op = None
+            return
         self.params = []
 
         for i in instruction.params:
@@ -42,6 +46,10 @@ class CPU:
 
     def execute(self):
         self.ip += 1
+
+        if not self.op:
+            return
+
         ret = self.op.execute(*self.params)
         
         if ret:
