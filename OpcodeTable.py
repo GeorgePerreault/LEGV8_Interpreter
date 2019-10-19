@@ -43,8 +43,8 @@ class OpcodeTable():
             "cbz": CondBranch(cpu, condition=lambda x: x == 0),
             "cbnz": CondBranch(cpu, condition=lambda x: x != 0),
 
-            "bl": None,
-            "br": None,
+            "bl": BranchLink(cpu),
+            "br": BranchReg(cpu),
 
             "b.eq": BranchEQ(cpu),
             "b.ne": BranchNE(cpu),
@@ -53,6 +53,7 @@ class OpcodeTable():
             "b.mi": BranchMI(cpu),
             "b.pl": BranchPL(cpu),
             "b.vs": BranchVS(cpu),
+            "b.vc": BranchVC(cpu),
             "b.hi": BranchHI(cpu),
             "b.ls": BranchLS(cpu),
             "b.ge": BranchGE(cpu),

@@ -22,6 +22,7 @@ r_r_i = (TTS.REGISTER, TTS.COMMA, TTS.REGISTER, TTS.COMMA, TTS.HASH, TTS.IMMEDIA
 mem = (TTS.REGISTER, TTS.COMMA, TTS.OPEN_SQUARE, TTS.REGISTER, TTS.COMMA, TTS.HASH, TTS.IMMEDIATE, TTS.CLOSE_SQUARE)
 br = (TTS.LABEL,)
 cbr = (TTS.REGISTER, TTS.COMMA, TTS.LABEL)
+EMPTY = tuple()
 
 INSTRUCTION_SET = {
     "add": r_r_r,
@@ -58,5 +59,23 @@ INSTRUCTION_SET = {
 
     "b": br,
     "cbz": cbr,
-    "cbnz": cbr
+    "cbnz": cbr,
+
+    "bl": br,
+    "br": (TTS.REGISTER,),
+
+    "b.eq": br,
+    "b.ne": br,
+    "b.hs": br,
+    "b.lo": br,
+    "b.mi": br,
+    "b.pl": br,
+    "b.vs": br,
+    "b.vc": br,
+    "b.hi": br,
+    "b.ls": br,
+    "b.ge": br,
+    "b.lt": br,
+    "b.gt": br,
+    "b.le": br
 }
