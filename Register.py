@@ -52,3 +52,8 @@ class Register:
             return self.value ^ other.value
         elif type(other) is int:
             return self.value ^ BitNumber(other)
+
+    def __eq__(self, other):
+        if type(other) is int:
+            return self.value == other
+        return self.value == other.value
