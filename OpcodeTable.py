@@ -1,68 +1,59 @@
-from MathOps import *
+from MathOps import Add, Sub, And, Or, Eor, LeftShift, RightShift
 from MemOps import Load, Store
 from BranchOps import *
 
-class OpcodeTable():
+OPCODE_TABLE = {
+    "add": Add(),
+    "addi": Add(),
+    "adds": Add(s=True),
+    "addis": Add(s=True),
 
-    def __init__(self, cpu):
-        self.OPCODE_TABLE = {
-            "add": Add(),
-            "addi": Add(),
-            "adds": Add(s=True),
-            "addis": Add(s=True),
+    "sub": Sub(),
+    "subi": Sub(),
+    "subs": Sub(s=True),
+    "subis": Sub(s=True),
 
-            "sub": Sub(),
-            "subi": Sub(),
-            "subs": Sub(s=True),
-            "subis": Sub(s=True),
+    "and": And(),
+    "andi": And(),
 
-            "and": And(),
-            "andi": And(),
+    "or": Or(),
+    "ori": Or(),
 
-            "or": Or(),
-            "ori": Or(),
+    "eor": Eor(),
+    "eori": Eor(),
 
-            "eor": Eor(),
-            "eori": Eor(),
+    "lsl": LeftShift(),
+    "lsr": RightShift(),
 
-            "lsl": LeftShift(),
-            "lsr": RightShift(),
+    "ldur": Load(),
+    "ldurw": Load(n_bytes=4),
+    "ldurh": Load(n_bytes=2),
+    "ldurb": Load(n_bytes=1),
 
-            "ldur": Load(cpu),
-            "ldurw": Load(cpu, n_bytes=4),
-            "ldurh": Load(cpu, n_bytes=2),
-            "ldurb": Load(cpu, n_bytes=1),
+    "stur": Store(),
+    "sturw": Store(n_bytes=4),
+    "sturh": Store(n_bytes=2),
+    "sturb": Store(n_bytes=1),
 
-            "stur": Store(cpu),
-            "sturw": Store(cpu, n_bytes=4),
-            "sturh": Store(cpu, n_bytes=2),
-            "sturb": Store(cpu, n_bytes=1),
+    "b": BranchOp(),
+    "cbz": CondBranch(condition=lambda x: x == 0),
+    "cbnz": CondBranch(condition=lambda x: x != 0),
 
-            "b": BranchOp(cpu),
-            "cbz": CondBranch(cpu, condition=lambda x: x == 0),
-            "cbnz": CondBranch(cpu, condition=lambda x: x != 0),
+    "bl": BranchLink(),
+    "br": BranchReg(),
 
-            "bl": BranchLink(cpu),
-            "br": BranchReg(cpu),
-
-            "b.eq": BranchEQ(cpu),
-            "b.ne": BranchNE(cpu),
-            "b.hs": BranchHS(cpu),
-            "b.lo": BranchLO(cpu),
-            "b.mi": BranchMI(cpu),
-            "b.pl": BranchPL(cpu),
-            "b.vs": BranchVS(cpu),
-            "b.vc": BranchVC(cpu),
-            "b.hi": BranchHI(cpu),
-            "b.ls": BranchLS(cpu),
-            "b.ge": BranchGE(cpu),
-            "b.lt": BranchLT(cpu),
-            "b.gt": BranchGT(cpu),
-            "b.le": BranchLE(cpu),
-        }
-
-    def __getitem__(self, i):
-        return self.OPCODE_TABLE[i]
-
-    def __setitem__(self, i, v):
-        raise Exception("Don't set item on the opcode table")
+    "b.eq": BranchEQ(),
+    "b.ne": BranchNE(),
+    "b.hs": BranchHS(),
+    "b.lo": BranchLO(),
+    "b.mi": BranchMI(),
+    "b.pl": BranchPL(),
+    "b.vs": BranchVS(),
+    "b.vc": BranchVC(),
+    "b.hi": BranchHI(),
+    "b.ls": BranchLS(),
+    "b.ge": BranchGE(),
+    "b.lt": BranchLT(),
+    "b.gt": BranchGT(),
+    "b.le": BranchLE()
+}

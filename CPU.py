@@ -2,7 +2,7 @@ from Register import Register
 from Instruction import Instruction
 from Memory import Memory
 from InstructionSet import TTS
-from OpcodeTable import OpcodeTable
+from OpcodeTable import OPCODE_TABLE
 from Flags import Flags
 from MathOps import Add, Sub
 
@@ -18,7 +18,6 @@ class CPU:
         self.saved_flags = Flags()
 
         self.memory = Memory()
-        self.OPCODE_TABLE = OpcodeTable(self)
 
     def set_flags(self):
         self.saved_flags.set_flags(self.tmp_flags)
@@ -42,7 +41,7 @@ class CPU:
                     raise KeyError(f"Invalid label: {i.l_val}")
                 self.params.append(goto)
 
-        self.op = self.OPCODE_TABLE[instruction.opcode]
+        self.op = OPCODE_TABLE[instruction.opcode](self)
 
     def execute(self):
         self.ip += 1

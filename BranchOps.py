@@ -1,7 +1,6 @@
-class BranchOp():
+from Op import Op
 
-    def __init__(self, cpu):
-        self.cpu = cpu
+class BranchOp(Op):
 
     def branch_on(self):
         return True
@@ -12,8 +11,7 @@ class BranchOp():
 
 class CondBranch(BranchOp):
 
-    def __init__(self, cpu, condition=None):
-        self.cpu = cpu
+    def __init__(self, condition=None):
         self.condition = condition
 
     def execute(self, reg, goto):
