@@ -15,6 +15,7 @@ class LexicalAnalyzer:
         self.cur_line = ""
         self.cur_label = ""
         self.has_label = False
+        self.eof = False
 
     def get_label(self):
         if not self.has_label:
@@ -53,6 +54,10 @@ class LexicalAnalyzer:
             self.cur_pos += 1
             
             self.set_label(opcode)
+
+            if self.cur_pos >= len(self.cur_line):
+                return None
+
             self.error_check(" ")
 
             opcode = self.get_str()
@@ -62,7 +67,6 @@ class LexicalAnalyzer:
 
     def get_params(self, expected_params):
         params = []
-        s = ""
 
         for expec in expected_params:
             method = self.get_one
@@ -80,13 +84,21 @@ class LexicalAnalyzer:
         return params
 
     def get_instruction(self):
-        self.cur_line = " ".join(self.file.readline().split()) #Removes excess spaces
-        self.cur_pos = 0
+        s = self.file.readline()
+        if s == "":
+            self.eof = True
+            return None
+        
+        self.cur_line = " ".join(s.split()) #Removes excess spaces
 
         if self.cur_line == "":
             return None
 
+        self.cur_pos = 0
+
         opcode = self.get_opcode()
+        if not opcode:
+            return Instruction(None, None, label=self.cur_label)
         self.error_check(" ")
 
         try:

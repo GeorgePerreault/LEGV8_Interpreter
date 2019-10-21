@@ -25,7 +25,9 @@ class Driver:
             inst = lex.get_instruction()
 
             if inst is None:
-                break
+                if lex.eof:
+                    break
+                continue
 
             self.code.append(inst)
             if lex.has_label:

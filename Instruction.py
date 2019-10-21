@@ -6,9 +6,11 @@ class Instruction:
         self.opcode = opcode
         self.params = params
         self.label = label
-        self.set_flags = True if self.opcode[-1] == "s" else False
 
     def build_str(self):
+        if not self.opcode:
+            return ""
+        
         s = f"{self.opcode} "
 
         for param in self.params:
