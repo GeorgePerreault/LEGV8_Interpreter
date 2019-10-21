@@ -38,6 +38,7 @@ class Driver:
 
         while cpu.ip < len(self.code):
             cpu.decode(self.code[cpu.ip], self.labels)
+            print(f"Running: {self.code[cpu.ip]}")
             cpu.execute()
 
         cpu.reg_dump(mode="hex")

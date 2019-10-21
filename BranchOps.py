@@ -7,6 +7,7 @@ class BranchOp(Op):
 
     def execute(self, goto):
         if self.branch_on():
+            print(f"Going to: {goto}")
             self.cpu.ip = goto
 
 class CondBranch(BranchOp):
