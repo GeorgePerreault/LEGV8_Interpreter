@@ -1,3 +1,12 @@
+from MathOps import Add, Sub, And, Or, Eor, LeftShift, RightShift
+from MemOps import Load, Store
+from BranchOps import *
+
+literally_just_getting_rid_of_the_wildcard_import_warning = Op()
+
+FUNC = 0
+PARAMS = 1
+
 class TTS:
     COMMA = 0
     REGISTER = 1
@@ -21,61 +30,62 @@ r_r_r = (TTS.REGISTER, TTS.COMMA, TTS.REGISTER, TTS.COMMA, TTS.REGISTER)
 r_r_i = (TTS.REGISTER, TTS.COMMA, TTS.REGISTER, TTS.COMMA, TTS.HASH, TTS.IMMEDIATE)
 mem = (TTS.REGISTER, TTS.COMMA, TTS.OPEN_SQUARE, TTS.REGISTER, TTS.COMMA, TTS.HASH, TTS.IMMEDIATE, TTS.CLOSE_SQUARE)
 br = (TTS.LABEL,)
+reg = (TTS.REGISTER,)
 cbr = (TTS.REGISTER, TTS.COMMA, TTS.LABEL)
 EMPTY = tuple()
 
 INSTRUCTION_SET = {
-    "add": r_r_r,
-    "addi": r_r_i,
-    "adds": r_r_r,
-    "addis": r_r_i,
+    "add": (Add(), r_r_r),
+    "addi": (Add(), r_r_i),
+    "adds": (Add(s=True), r_r_r),
+    "addis": (Add(s=True), r_r_i),
 
-    "sub": r_r_r,
-    "subi": r_r_i,
-    "subs": r_r_r,
-    "subis": r_r_i,
+    "sub": (Sub(), r_r_r),
+    "subi": (Sub(), r_r_i),
+    "subs": (Sub(s=True), r_r_r),
+    "subis": (Sub(s=True), r_r_i),
 
-    "and": r_r_r,
-    "andi": r_r_i,
+    "and": (And(), r_r_r),
+    "andi": (And(), r_r_i),
 
-    "or": r_r_r,
-    "ori": r_r_i,
+    "or": (Or(), r_r_r),
+    "ori": (Or(), r_r_i),
 
-    "eor": r_r_r,
-    "eori": r_r_i,
+    "eor": (Eor(), r_r_r),
+    "eori": (Eor(), r_r_i),
 
-    "lsl": r_r_i,
-    "lsr": r_r_i,
+    "lsl": (LeftShift(), r_r_i),
+    "lsr": (RightShift(), r_r_i),
 
-    "ldur": mem,
-    "ldurw": mem,
-    "ldurh": mem,
-    "ldurb": mem,
+    "ldur": (Load(), mem),
+    "ldurw": (Load(n_bytes=4), mem),
+    "ldurh": (Load(n_bytes=2), mem),
+    "ldurb": (Load(n_bytes=1), mem),
 
-    "stur": mem,
-    "sturw": mem,
-    "sturh": mem,
-    "sturb": mem,
+    "stur": (Store(), mem),
+    "sturw": (Store(n_bytes=4), mem),
+    "sturh": (Store(n_bytes=2), mem),
+    "sturb": (Store(n_bytes=1), mem),
 
-    "b": br,
-    "cbz": cbr,
-    "cbnz": cbr,
+    "b": (BranchOp(), br),
+    "cbz": (CondBranch(condition=lambda x: x == 0), cbr),
+    "cbnz": (CondBranch(condition=lambda x: x != 0), cbr),
 
-    "bl": br,
-    "br": (TTS.REGISTER,),
+    "bl": (BranchLink(), br),
+    "br": (BranchReg(), reg),
 
-    "b.eq": br,
-    "b.ne": br,
-    "b.hs": br,
-    "b.lo": br,
-    "b.mi": br,
-    "b.pl": br,
-    "b.vs": br,
-    "b.vc": br,
-    "b.hi": br,
-    "b.ls": br,
-    "b.ge": br,
-    "b.lt": br,
-    "b.gt": br,
-    "b.le": br
+    "b.eq": (BranchEQ(), br),
+    "b.ne": (BranchNE(), br),
+    "b.hs": (BranchHS(), br),
+    "b.lo": (BranchLO(), br),
+    "b.mi": (BranchMI(), br),
+    "b.pl": (BranchPL(), br),
+    "b.vs": (BranchVS(), br),
+    "b.vc": (BranchVC(), br),
+    "b.hi": (BranchHI(), br),
+    "b.ls": (BranchLS(), br),
+    "b.ge": (BranchGE(), br),
+    "b.lt": (BranchLT(), br),
+    "b.gt": (BranchGT(), br),
+    "b.le": (BranchLE(), br)
 }

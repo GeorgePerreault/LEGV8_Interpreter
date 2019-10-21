@@ -1,7 +1,7 @@
 from string import ascii_letters
 from Instruction import Instruction
-from Token import Token, TOKEN_TYPE_NAMES, TTS
-from InstructionSet import INSTRUCTION_SET
+from Token import Token, TOKEN_TYPE_NAMES
+from InstructionSet import INSTRUCTION_SET, TTS, PARAMS
 
 ALLOWED_CHARS = {*ascii_letters, "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."}
 
@@ -102,7 +102,7 @@ class LexicalAnalyzer:
         self.error_check(" ")
 
         try:
-            expected_params = INSTRUCTION_SET[opcode]
+            expected_params = INSTRUCTION_SET[opcode][PARAMS]
         except KeyError:
             raise ParserError(f"Invalid opcode: {opcode}")
 

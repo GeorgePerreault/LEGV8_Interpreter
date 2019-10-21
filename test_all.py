@@ -1,27 +1,15 @@
 import pytest
 
 from InstructionSet import INSTRUCTION_SET
-from OpcodeTable import OpcodeTable
 from Memory import Memory
 from MemOps import Load, Store
 from BitNumber import BitNumber
 from CPU import CPU
 
-def all_in_both():
-    opct = OpcodeTable(CPU())
-
-    if len(INSTRUCTION_SET) != len(opct.OPCODE_TABLE):
-        return False
-
-    for opcode in INSTRUCTION_SET.keys():
-        if opcode not in opct.OPCODE_TABLE:
-            return False
-    return True
-
 def mem_swap(v, e, n_bytes=8):
-    mem = Memory()
-    ld = Load(mem, n_bytes=n_bytes)
-    st = Store(mem, n_bytes=n_bytes)
+    cpu = CPU()
+    ld = Load(n_bytes=n_bytes)(cpu)
+    st = Store(n_bytes=n_bytes)(cpu)
 
     class dummy_reg():
         def __init__(self, v):
@@ -49,9 +37,6 @@ def test_bits():
     y = BitNumber(8)
     assert x - y == 8
     assert (x + y + y) == 0x20
-
-def test_tables():
-    assert all_in_both()
 
 def test_memory():
     assert mem_swap(0xABCD1234ABCD1234, 0xABCD1234ABCD1234)
