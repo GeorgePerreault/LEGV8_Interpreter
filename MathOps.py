@@ -1,31 +1,43 @@
+from Op import Op
 
-class MathOp():
+class Add(Op):
 
     def __init__(self, s=False):
         self.s = s
-
-class Add(MathOp):
 
     def execute(self, x, y, z):
         res = y + z
         x.assign(res)
         return res
 
-class Sub(MathOp):
+class Sub(Op):
+
+    def __init__(self, s=False):
+        self.s = s
 
     def execute(self, x, y, z):
         res = y - z
         x.assign(res)
         return res
 
-class And():
+class And(Op):
     def execute(self, x, y, z):
         x.assign(y & z)
 
-class Or():
+class Or(Op):
     def execute(self, x, y, z):
         x.assign(y | z)
 
-class Eor():
+class Eor(Op):
     def execute(self, x, y, z):
         x.assign(y ^ z)
+
+class LeftShift(Op):
+
+    def execute(self, x, y, z):
+        x.assign(y.value << z)
+
+class RightShift(Op):
+
+    def execute(self, x, y, z):
+        x.assign(y.value >> z)

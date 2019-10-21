@@ -1,7 +1,6 @@
-from MathOps import Add, Sub, And, Or, Eor
+from MathOps import *
 from MemOps import Load, Store
 from BranchOps import *
-from ShiftOps import LeftShift, RightShift
 
 class OpcodeTable():
 
