@@ -1,4 +1,4 @@
-from Register import Register
+from Register import Register, special_reg_names
 from Instruction import Instruction
 from Memory import Memory
 from InstructionSet import INSTRUCTION_SET, TTS, FUNC
@@ -68,7 +68,10 @@ class CPU:
         while i < len(self.registers):
             c_reg = self.registers[i]
 
-            s += f"X{c_reg.number:02}: "
+            if c_reg.number < 28:
+                s += f"X{c_reg.number:02}: "
+            else:
+                s += f"{special_reg_names(c_reg.number):>3}: "
             if mode == "dec":
                 s += f"{c_reg.value.bits:020}"
             elif mode == "hex":

@@ -1,4 +1,4 @@
-from Register import ZERO_REG, LINK_REG, FRAME_POINTER, STACK_POINTER
+from Register import ZERO_REG, LINK_REG, FRAME_POINTER, STACK_POINTER, special_reg_names
 
 from InstructionSet import TOKEN_TYPE_NAMES, TTS
 
@@ -68,7 +68,10 @@ class Token:
 
     def __repr__(self):
         if self.type == TTS.REGISTER:
-            return f"X{self.r_val}"
+            if self.r_val < 28:
+                return f"X{self.r_val}"
+            return special_reg_names(self.r_val)
+        
         if self.type == TTS.IMMEDIATE:
             return f"{self.i_val}"
         if self.type == TTS.LABEL:

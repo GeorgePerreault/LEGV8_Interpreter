@@ -6,6 +6,16 @@ FRAME_POINTER = 29
 STACK_POINTER = 28
 
 
+def special_reg_names(i):
+    if i == 28:
+        return "SP"
+    if i == 29:
+        return "FP"
+    if i == 30:
+        return "LR"
+    if i == 31:
+        return "XZR"
+
 class Register:
 
     def __init__(self, number: int):
