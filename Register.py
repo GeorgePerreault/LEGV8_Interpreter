@@ -30,8 +30,19 @@ class Register:
         else:
             self.value = value
 
-    def __repr__(self):
-        return f"X{self.number}:{self.value}"
+    def __repr__(self, mode="hex"):
+        s = ""
+        if self.number < 28:
+                s += f"X{self.number:02}: "
+        else:
+            s += f"{special_reg_names(self.number):>3}: "
+        if mode == "dec":
+            s += f"{self.value.bits:020}"
+        elif mode == "hex":
+            s += f"0x{self.value.bits:016x}"
+        elif mode == "bin":
+            s += f"0b{self.value.bits:064b}"
+        return s
 
     def __add__(self, other):
         if type(other) is Register:

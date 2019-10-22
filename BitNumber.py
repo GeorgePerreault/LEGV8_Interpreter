@@ -6,7 +6,6 @@ class BitNumber:
         self.overflow = 0
         self.negative = 0
         self.zero = 0
-
         self.bits = val & 0xFFFFFFFFFFFFFFFF
         self.n_bits = n_bits
 
@@ -55,18 +54,19 @@ class BitNumber:
             return self.__add__(BitNumber(other))
 
         res = 0
-        bit_num = 0
+        const_one = 1
 
         for (i, j) in zip(self, other):
             n = i + j + c
-            
             last_c = c
             c = 1 if n > 1 else 0
-            res |= (1 << bit_num) if n % 2 == 1 else 0
+            res |= const_one if n % 2 == 1 else 0
 
-            bit_num += 1
+            const_one <<= 1
 
         ret = BitNumber(res)
+
+        # print(f"{bin(self.bits)} + {bin(other.bits)} = {bin(ret.bits)}")
 
         ret.carry = c
         ret.overflow = 1 if last_c != c else 0

@@ -11,7 +11,7 @@ class CPU:
         self.registers = [Register(i) for i in range(32)] #ALERT: Hardcoded number of registers
         self.params = None
         self.op = None
-        self.ip = 0
+        self.pc = 1
 
         self.tmp_flags = Flags()
         self.saved_flags = Flags()
@@ -43,7 +43,7 @@ class CPU:
         self.op = INSTRUCTION_SET[instruction.opcode][FUNC](self)
 
     def execute(self):
-        self.ip += 1
+        self.pc += 1
 
         if not self.op:
             return
@@ -61,26 +61,13 @@ class CPU:
                 self.set_flags()
     
     def reg_dump(self, mode="dec", row_size=4):
-        i = 0
         row_counter = 0
         s = ""
 
-        while i < len(self.registers):
-            c_reg = self.registers[i]
-
-            if c_reg.number < 28:
-                s += f"X{c_reg.number:02}: "
-            else:
-                s += f"{special_reg_names(c_reg.number):>3}: "
-            if mode == "dec":
-                s += f"{c_reg.value.bits:020}"
-            elif mode == "hex":
-                s += f"0x{c_reg.value.bits:016x}"
-            elif mode == "bin":
-                s += f"0b{c_reg.value.bits:064b}"
+        for reg in self.registers:
+            s += reg.__repr__(mode=mode)
 
             row_counter += 1
-            i += 1
 
             if row_counter == row_size:
                 row_counter = 0

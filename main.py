@@ -1,9 +1,13 @@
 from Driver import Driver
-from test_all import test_bits
+from LexicalAnalyzer import ParserError
 
 def main():
     d = Driver("input.leg")
-    d.generate_code()
+    try:
+        d.generate_code()
+    except ParserError as e:
+        print(f"-----ERROR-----\n{e}")
+        exit()
     d.run()
 
 if __name__ == "__main__":

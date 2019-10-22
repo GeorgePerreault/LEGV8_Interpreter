@@ -7,8 +7,7 @@ class BranchOp(Op):
 
     def execute(self, goto):
         if self.branch_on():
-            print(f"Going to: {goto}")
-            self.cpu.ip = goto
+            self.cpu.pc = goto
 
 class CondBranch(BranchOp):
 
@@ -17,18 +16,18 @@ class CondBranch(BranchOp):
 
     def execute(self, reg, goto):
         if self.condition(reg):
-            self.cpu.ip = goto
+            self.cpu.pc = goto
 
 class BranchLink(BranchOp):
     
     def execute(self, goto):
-        self.cpu.registers[30].assign(self.cpu.ip)
-        self.cpu.ip = goto
+        self.cpu.registers[30].assign(self.cpu.pc)
+        self.cpu.pc = goto
 
 class BranchReg(BranchOp):
     
     def execute(self, goto_reg):
-        self.cpu.ip = int(goto_reg.value)
+        self.cpu.pc = int(goto_reg.value)
 
 class BranchEQ(BranchOp):
     def branch_on(self):

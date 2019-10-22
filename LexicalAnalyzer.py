@@ -1,9 +1,9 @@
 from string import ascii_letters
 from Instruction import Instruction
-from Token import Token, TOKEN_TYPE_NAMES
+from Token import Token, TOKEN_TYPE_NAMES, TokenError
 from InstructionSet import INSTRUCTION_SET, TTS, PARAMS
 
-ALLOWED_CHARS = {*ascii_letters, "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."}
+ALLOWED_CHARS = {*ascii_letters, "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "#"}
 
 class ParserError(Exception):
     pass
@@ -67,7 +67,7 @@ class LexicalAnalyzer:
 
     def get_params(self, expected_params):
         params = []
-
+        
         for expec in expected_params:
             method = self.get_one
             if expec in (TTS.REGISTER, TTS.IMMEDIATE, TTS.LABEL):
@@ -75,7 +75,7 @@ class LexicalAnalyzer:
 
             t = Token(method())
             if t.type != expec:
-                raise ParserError(f"Expected {TOKEN_TYPE_NAMES[expec]} but got: {t} of type {TOKEN_TYPE_NAMES[t.type]}")
+                raise ParserError(f"Expected {TOKEN_TYPE_NAMES[expec]} but got: {t}")
             params.append(t)
 
             if expec == TTS.COMMA:
@@ -104,10 +104,13 @@ class LexicalAnalyzer:
         try:
             expected_params = INSTRUCTION_SET[opcode][PARAMS]
         except KeyError:
-            raise ParserError(f"Invalid opcode: {opcode}")
-
-        params = self.get_params(expected_params)
+            raise ParserError(f"{self.cur_line}\nInvalid opcode: {opcode}")
         
+        try:
+            params = self.get_params(expected_params)
+        except (ParserError, TokenError) as e:
+            raise ParserError(f"{self.cur_line}\nIn parsing of opcode '{opcode}'\n{e}")
+
         if self.has_label:
             return Instruction(opcode, params, label=self.cur_label)
         return Instruction(opcode, params)

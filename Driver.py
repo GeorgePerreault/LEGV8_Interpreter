@@ -5,12 +5,12 @@ class Driver:
     
     def __init__(self, file):
         self.file = file
-        self.code = []
+        self.code = [None]
         self.labels = {}
 
     def code_dump(self):
-        for inst in self.code:
-            s = ""
+        for (line, inst) in enumerate(i for i in self.code if i):
+            s = f"{line} "
             if inst.label:
                 s += f"{inst.label}: "
             s += f"\t\t{inst}"
@@ -18,28 +18,34 @@ class Driver:
 
     def generate_code(self):
         lex = LexicalAnalyzer(self.file)
-        line_num = -1
+        line_num = 0
 
         while True:
             line_num += 1
             inst = lex.get_instruction()
+
+            self.code.append(inst)
 
             if inst is None:
                 if lex.eof:
                     break
                 continue
 
-            self.code.append(inst)
             if lex.has_label:
                 self.labels[lex.get_label()] = line_num
     
     def run(self):
         cpu = CPU()
 
-        while cpu.ip < len(self.code):
-            cpu.decode(self.code[cpu.ip], self.labels)
-            print(f"Running: {self.code[cpu.ip]}")
+        while cpu.pc < len(self.code):
+            inst = self.code[cpu.pc]
+            if not inst:
+                cpu.pc += 1
+                continue
+
+            cpu.decode(inst, self.labels)
+            # print(f"Running: {self.code[cpu.pc]}")
             cpu.execute()
 
-        cpu.reg_dump(mode="hex")
-        self.code_dump()
+        cpu.reg_dump(mode="dec")
+        # self.code_dump()
