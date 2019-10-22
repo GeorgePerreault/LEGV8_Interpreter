@@ -4,6 +4,9 @@ class Memory:
         self.memory = {}
         self.bounds = bounds
 
+    def __repr__(self):
+        return str(self.memory)
+
     def __getitem__(self, i):
         if i > self.bounds or i < 0:
             raise IndexError(f"Address {i} is out of bounds")

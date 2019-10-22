@@ -44,8 +44,8 @@ class Driver:
                 continue
 
             cpu.decode(inst, self.labels)
-            # print(f"Running: {self.code[cpu.pc]}")
             cpu.execute()
 
         cpu.reg_dump(mode="dec")
+        # cpu.mem_dump()
         # self.code_dump()

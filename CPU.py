@@ -77,6 +77,8 @@ class CPU:
 
         print(s)
             
+    def mem_dump(self):
+        print(self.memory)
 
     def __repr__(self):
         return str(self.registers)
