@@ -7,6 +7,7 @@ class Driver:
         self.file = file
         self.code = [None]
         self.labels = {}
+        self.cpu = None
 
     def code_dump(self):
         for (line, inst) in enumerate(i for i in self.code if i):
@@ -34,24 +35,31 @@ class Driver:
             if lex.has_label:
                 self.labels[lex.get_label()] = line_num
 
-    def run(self):
+    def setup(self):
         start = 1
         try:
             start = self.labels["main"]
         except KeyError:
             pass
 
-        cpu = CPU(pc=start)
+        self.cpu = CPU(pc=start)
 
-        while cpu.pc < len(self.code) and cpu.pc > 0:
-            inst = self.code[cpu.pc]
-            if not inst:
-                cpu.pc += 1
-                continue
+    def next_inst(self):
+        inst = self.code[self.cpu.pc]
+        if not inst:
+            self.cpu.pc += 1
+            return
 
-            cpu.decode(inst, self.labels)
-            cpu.execute()
+        self.cpu.decode(inst, self.labels)
+        self.cpu.execute()
 
-        cpu.reg_dump(mode="dec")
+
+    def run(self):
+        self.setup()
+        
+        while self.cpu.pc < len(self.code) and self.cpu.pc > 0:
+            self.next_inst()
+        
+        self.cpu.reg_dump(mode="dec")
         # self.code_dump()
         # cpu.mem_dump()

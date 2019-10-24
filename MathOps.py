@@ -2,18 +2,12 @@ from Op import Op
 
 class Add(Op):
 
-    def __init__(self, s=False):
-        self.s = s
-
     def execute(self, x, y, z):
         res = y + z
         x.assign(res)
         return res
 
 class Sub(Op):
-
-    def __init__(self, s=False):
-        self.s = s
 
     def execute(self, x, y, z):
         res = y - z

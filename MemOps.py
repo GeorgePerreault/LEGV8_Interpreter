@@ -4,9 +4,6 @@ from BitNumber import BitNumber
 
 class Load(Op):
 
-    def __init__(self, n_bytes=8):
-        self.n_bytes = n_bytes
-
     def execute(self, x, y, z):
         memory = self.cpu.memory
 
@@ -23,9 +20,6 @@ class Load(Op):
 
 
 class Store(Op):
-
-    def __init__(self, n_bytes=8):
-        self.n_bytes = n_bytes
 
     def execute(self, x, y, z):
         memory = self.cpu.memory

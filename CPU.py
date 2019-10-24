@@ -50,16 +50,13 @@ class CPU:
 
         ret = self.op.execute(*self.params)
         
-        if ret:
+        if self.op.s:
             self.tmp_flags.carry = ret.carry
             self.tmp_flags.overflow = ret.overflow
             self.tmp_flags.negative = ret.negative
             self.tmp_flags.zero = ret.zero
+            self.set_flags()
 
-        if type(self.op) is Add or type(self.op) is Sub:
-            if self.op.s:
-                self.set_flags()
-    
     def reg_dump(self, mode="dec", row_size=4):
         row_counter = 0
         s = ""
