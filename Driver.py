@@ -9,9 +9,15 @@ class Driver:
         self.labels = {}
         self.cpu = None
 
+    def print_inst(self, line, inst):
+        print(f"{line:>03} {inst}")
+
+    def print_cur(self):
+        self.print_inst(self.cpu.pc, self.code[self.cpu.pc])
+    
     def code_dump(self):
         for (line, inst) in enumerate(i for i in self.code if i):
-            print(f"{line:>03} {inst}")
+            self.print_inst(line, inst)
 
     def generate_code(self):
         lex = LexicalAnalyzer(self.file)
@@ -56,7 +62,7 @@ class Driver:
 
     def run(self):
         self.setup()
-        
+
         while self.cpu.pc < len(self.code) and self.cpu.pc > 0:
             self.next_inst()
         

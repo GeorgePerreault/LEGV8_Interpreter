@@ -43,14 +43,17 @@ class LexicalAnalyzer:
         return self.cur_line[self.cur_pos - 1]
 
     def error_check(self, match):
+        if self.cur_pos >= len(self.cur_line):
+            raise ParserError(f"{self.cur_line}\nInvalid syntax. Expected: '{match}' but line was empty")
         if self.cur_line[self.cur_pos] != match:
-            raise ParserError(f"Invalid syntax at: {self.cur_line}. Expected: '{match}' but got {self.cur_line[self.cur_pos]}")
+            raise ParserError(f"{self.cur_line}\nInvalid syntax. Expected: '{match}' but got {self.cur_line[self.cur_pos]}")
         self.cur_pos += 1
 
     
     def get_opcode(self):
         opcode = self.get_str()
-        if self.cur_line[self.cur_pos] == ":": #Not an opcode was actually a label
+        if self.cur_pos < len(self.cur_line) and self.cur_line[self.cur_pos] == ":":
+            # Not an opcode was actually a label
             self.cur_pos += 1
             
             self.set_label(opcode)
@@ -81,6 +84,9 @@ class LexicalAnalyzer:
             if expec == TTS.COMMA:
                 self.error_check(" ")
 
+        if self.cur_pos < len(self.cur_line):
+            raise ParserError(f"Unexpected token: {self.cur_line[self.cur_pos:]}")
+
         return params
 
     def get_instruction(self):
@@ -94,11 +100,17 @@ class LexicalAnalyzer:
         if self.cur_line == "":
             return None
 
+        
         self.cur_pos = 0
+        b_point = False
+
+        if len(self.cur_line) > 1 and self.cur_line[-1] == "@" and self.cur_line[-2] == " ":
+            b_point = True
+            self.cur_line = self.cur_line[:-2]
 
         opcode = self.get_opcode()
         if not opcode:
-            return Instruction(None, None, label=self.cur_label)
+            return Instruction(None, None, label=self.cur_label, b_point=b_point)
         self.error_check(" ")
 
         try:
@@ -112,5 +124,5 @@ class LexicalAnalyzer:
             raise ParserError(f"{og_line.strip()}\nIn parsing of opcode '{opcode}'\n{e}")
 
         if self.has_label:
-            return Instruction(opcode, params, label=self.cur_label)
-        return Instruction(opcode, params)
+            return Instruction(opcode, params, label=self.cur_label, b_point=b_point)
+        return Instruction(opcode, params, b_point=b_point)

@@ -2,10 +2,11 @@ from InstructionSet import TTS
 
 class Instruction:
     
-    def __init__(self, opcode, params, label=None):
+    def __init__(self, opcode, params, label=None, b_point=False):
         self.opcode = opcode
         self.params = params
         self.label = label
+        self.b_point = b_point
 
     def build_str(self):
         s = ""
