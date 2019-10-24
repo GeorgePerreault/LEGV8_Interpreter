@@ -17,22 +17,20 @@ def main():
     elif "-bin" in sys.argv:
         mode = "bin"
 
-    driver = start(file, mode)
+    driver = Driver(file, mode=mode)
+    start(file, driver)
 
     if "-d" in sys.argv:
         debug(driver)
     else:
         run(driver)
 
-def start(file, mode):
-    driver = Driver(file, mode=mode)
-
+def start(file, driver):
     try:
         driver.generate_code()
     except Exception as e:
         print(f"-----ERROR-----\n{e}")
         exit()
-    return driver
 
 def run(driver):
     driver.run()
