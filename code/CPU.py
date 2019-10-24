@@ -1,9 +1,9 @@
-from Register import Register, special_reg_names
-from Instruction import Instruction
-from Memory import Memory
-from InstructionSet import INSTRUCTION_SET, TTS, FUNC
-from Flags import Flags
-from MathOps import Add, Sub
+from code.Register import Register, special_reg_names
+from code.Instruction import Instruction
+from code.Memory import Memory
+from code.InstructionSet import INSTRUCTION_SET, TTS, FUNC
+from code.Flags import Flags
+from code.MathOps import Add, Sub
 
 class CPU:
 

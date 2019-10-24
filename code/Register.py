@@ -1,4 +1,4 @@
-from BitNumber import BitNumber
+from code.BitNumber import BitNumber
 
 ZERO_REG = 31
 LINK_REG = 30

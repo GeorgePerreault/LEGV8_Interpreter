@@ -1,5 +1,5 @@
-from CPU import CPU
-from LexicalAnalyzer import LexicalAnalyzer, ParserError
+from code.CPU import CPU
+from code.LexicalAnalyzer import LexicalAnalyzer, ParserError
 
 class Driver:
     

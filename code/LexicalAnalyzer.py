@@ -1,7 +1,7 @@
 from string import ascii_letters
-from Instruction import Instruction
-from Token import Token, TOKEN_TYPE_NAMES, TokenError
-from InstructionSet import INSTRUCTION_SET, TTS, PARAMS
+from code.Instruction import Instruction
+from code.Token import Token, TOKEN_TYPE_NAMES, TokenError
+from code.InstructionSet import INSTRUCTION_SET, TTS, PARAMS
 
 ALLOWED_CHARS = {*ascii_letters, "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "#"}
 

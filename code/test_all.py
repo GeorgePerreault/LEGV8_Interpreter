@@ -1,10 +1,10 @@
 import pytest
 
-from InstructionSet import INSTRUCTION_SET
-from Memory import Memory
-from MemOps import Load, Store
-from BitNumber import BitNumber
-from CPU import CPU
+from code.InstructionSet import INSTRUCTION_SET
+from code.Memory import Memory
+from code.MemOps import Load, Store
+from code.BitNumber import BitNumber
+from code.CPU import CPU
 
 def mem_swap(v, e, n_bytes=8):
     cpu = CPU()

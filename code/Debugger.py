@@ -1,4 +1,4 @@
-from Driver import Driver
+from code.Driver import Driver
 
 ALLOWED_ACTIONS = ("continue", "step", "list", "mode", "c", "s", "l", "m")
 
