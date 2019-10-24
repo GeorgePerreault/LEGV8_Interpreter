@@ -3,11 +3,12 @@ from LexicalAnalyzer import LexicalAnalyzer, ParserError
 
 class Driver:
     
-    def __init__(self, file):
+    def __init__(self, file, mode="dec"):
         self.file = file
         self.code = [None]
         self.labels = {}
         self.cpu = None
+        self.mode = mode
 
     def __print_inst(self, line, inst):
         if not inst:
@@ -35,8 +36,10 @@ class Driver:
     def code_dump(self):
         self.__print_range(0, len(self.code))
 
-    def reg_dump(self, mode="dec"):
-        self.cpu.reg_dump(mode=mode)
+    def reg_dump(self, row_size=None):
+        if not row_size:
+            row_size = 2 if self.mode == "bin" else 4
+        self.cpu.reg_dump(mode=self.mode, row_size=row_size)
 
     def mem_dump(self):
         self.cpu.mem_dump()
@@ -81,8 +84,8 @@ class Driver:
         while self.active():
             self.exe_next()
 
-        self.reg_dump(mode="dec")
-        self.code_dump()
+        # self.reg_dump(mode="dec")
+        # self.code_dump()
         # self.mem_dump()
 
     def exe_next(self):
