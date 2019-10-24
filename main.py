@@ -1,14 +1,26 @@
 from Driver import Driver
-from LexicalAnalyzer import ParserError
+from Debugger import Debugger
 
-def main():
-    d = Driver("input.leg")
+def main(file):
+    start("input.leg")
+
+def start(file):
+    driver = Driver(file)
+
     try:
-        d.generate_code()
+        driver.generate_code()
     except Exception as e:
         print(f"-----ERROR-----\n{e}")
         exit()
-    d.run()
+
+    run(driver)
+
+def run(driver):
+    driver.run()
+
+def debug(driver):
+    bug = Debugger(driver)
+    bug.debug()
 
 if __name__ == "__main__":
-    main()
+    main("input.leg")

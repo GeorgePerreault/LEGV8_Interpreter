@@ -11,10 +11,13 @@ class Driver:
 
     def print_inst(self, line, inst):
         print(f"{line:>03} {inst}")
+    
+    def cur_inst(self):
+        return self.code[self.cpu.pc]
 
     def print_cur(self):
-        self.print_inst(self.cpu.pc, self.code[self.cpu.pc])
-    
+        self.print_inst(self.cpu.pc, self.cur_inst())
+
     def code_dump(self):
         for (line, inst) in enumerate(i for i in self.code if i):
             self.print_inst(line, inst)
@@ -50,8 +53,8 @@ class Driver:
 
         self.cpu = CPU(pc=start)
 
-    def next_inst(self):
-        inst = self.code[self.cpu.pc]
+    def exe_next(self):
+        inst = self.cur_inst()
         if not inst:
             self.cpu.pc += 1
             return
@@ -59,12 +62,14 @@ class Driver:
         self.cpu.decode(inst, self.labels)
         self.cpu.execute()
 
+    def active(self):
+        return self.cpu.pc < len(self.code) and self.cpu.pc > 0 
 
     def run(self):
         self.setup()
 
-        while self.cpu.pc < len(self.code) and self.cpu.pc > 0:
-            self.next_inst()
+        while self.active():
+            self.exe_next()
         
         self.cpu.reg_dump(mode="dec")
         # self.code_dump()
