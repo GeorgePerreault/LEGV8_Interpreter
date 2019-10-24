@@ -52,6 +52,8 @@ class LexicalAnalyzer:
     
     def get_opcode(self):
         opcode = self.get_str()
+        if opcode == "":
+            raise ParserError(f"{self.cur_line}\nExpected opcode")
         if self.cur_pos < len(self.cur_line) and self.cur_line[self.cur_pos] == ":":
             # Not an opcode was actually a label
             self.cur_pos += 1

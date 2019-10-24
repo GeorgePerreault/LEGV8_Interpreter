@@ -13,7 +13,7 @@ def start(file):
         print(f"-----ERROR-----\n{e}")
         exit()
 
-    run(driver)
+    debug(driver)
 
 def run(driver):
     driver.run()

@@ -9,18 +9,37 @@ class Driver:
         self.labels = {}
         self.cpu = None
 
-    def print_inst(self, line, inst):
+    def __print_inst(self, line, inst):
+        if not inst:
+            inst = ""
         print(f"{line:>03} {inst}")
     
+    def __print_range(self, start, stop):
+        if stop > len(self.code):
+            stop = len(self.code)
+        if start <= 0:
+            start = 1
+
+        for i in range(start, stop):
+            self.__print_inst(i, self.code[i])
+
     def cur_inst(self):
         return self.code[self.cpu.pc]
 
-    def print_cur(self):
-        self.print_inst(self.cpu.pc, self.cur_inst())
+    def print_cur(self, spread=None):
+        if spread:
+            self.__print_range(self.cpu.pc - spread, self.cpu.pc + spread + 1)
+        else:
+            self.__print_inst(self.cpu.pc, self.cur_inst())
 
     def code_dump(self):
-        for (line, inst) in enumerate(i for i in self.code if i):
-            self.print_inst(line, inst)
+        self.__print_range(0, len(self.code))
+
+    def reg_dump(self, mode="dec"):
+        self.cpu.reg_dump(mode=mode)
+
+    def mem_dump(self):
+        self.cpu.mem_dump()
 
     def generate_code(self):
         lex = LexicalAnalyzer(self.file)
@@ -53,6 +72,19 @@ class Driver:
 
         self.cpu = CPU(pc=start)
 
+    def active(self):
+        return self.cpu.pc < len(self.code) and self.cpu.pc > 0 
+
+    def run(self):
+        self.setup()
+
+        while self.active():
+            self.exe_next()
+
+        self.reg_dump(mode="dec")
+        self.code_dump()
+        # self.mem_dump()
+
     def exe_next(self):
         inst = self.cur_inst()
         if not inst:
@@ -62,15 +94,3 @@ class Driver:
         self.cpu.decode(inst, self.labels)
         self.cpu.execute()
 
-    def active(self):
-        return self.cpu.pc < len(self.code) and self.cpu.pc > 0 
-
-    def run(self):
-        self.setup()
-
-        while self.active():
-            self.exe_next()
-        
-        self.cpu.reg_dump(mode="dec")
-        # self.code_dump()
-        # cpu.mem_dump()
