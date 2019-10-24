@@ -1,5 +1,5 @@
 from CPU import CPU
-from LexicalAnalyzer import LexicalAnalyzer
+from LexicalAnalyzer import LexicalAnalyzer, ParserError
 
 class Driver:
     
@@ -10,11 +10,7 @@ class Driver:
 
     def code_dump(self):
         for (line, inst) in enumerate(i for i in self.code if i):
-            s = f"{line} "
-            if inst.label:
-                s += f"{inst.label}: "
-            s += f"\t\t{inst}"
-            print(s)
+            print(f"{line:>03} {inst}")
 
     def generate_code(self):
         lex = LexicalAnalyzer(self.file)
@@ -22,7 +18,11 @@ class Driver:
 
         while True:
             line_num += 1
-            inst = lex.get_instruction()
+
+            try:
+                inst = lex.get_instruction()            
+            except ParserError as e:
+                raise ParserError(f"{line_num:>03} {e}")
 
             self.code.append(inst)
 
@@ -33,7 +33,7 @@ class Driver:
 
             if lex.has_label:
                 self.labels[lex.get_label()] = line_num
-    
+
     def run(self):
         cpu = CPU()
 
@@ -47,5 +47,5 @@ class Driver:
             cpu.execute()
 
         cpu.reg_dump(mode="dec")
+        self.code_dump()
         # cpu.mem_dump()
-        # self.code_dump()

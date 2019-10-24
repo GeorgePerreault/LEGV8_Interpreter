@@ -84,12 +84,12 @@ class LexicalAnalyzer:
         return params
 
     def get_instruction(self):
-        s = self.file.readline()
-        if s == "":
+        og_line = self.file.readline()
+        if og_line == "":
             self.eof = True
             return None
         
-        self.cur_line = " ".join(s.split()) #Removes excess spaces
+        self.cur_line = " ".join(og_line.split()) #Removes excess spaces
 
         if self.cur_line == "":
             return None
@@ -104,12 +104,12 @@ class LexicalAnalyzer:
         try:
             expected_params = INSTRUCTION_SET[opcode][PARAMS]
         except KeyError:
-            raise ParserError(f"{self.cur_line}\nInvalid opcode: {opcode}")
+            raise ParserError(f"{og_line.strip()}\nInvalid opcode: {opcode}")
         
         try:
             params = self.get_params(expected_params)
         except (ParserError, TokenError) as e:
-            raise ParserError(f"{self.cur_line}\nIn parsing of opcode '{opcode}'\n{e}")
+            raise ParserError(f"{og_line.strip()}\nIn parsing of opcode '{opcode}'\n{e}")
 
         if self.has_label:
             return Instruction(opcode, params, label=self.cur_label)

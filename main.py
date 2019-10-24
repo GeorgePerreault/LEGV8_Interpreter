@@ -5,7 +5,7 @@ def main():
     d = Driver("input.leg")
     try:
         d.generate_code()
-    except ParserError as e:
+    except Exception as e:
         print(f"-----ERROR-----\n{e}")
         exit()
     d.run()

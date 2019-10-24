@@ -8,10 +8,17 @@ class Instruction:
         self.label = label
 
     def build_str(self):
+        s = ""
+
+        if self.label:
+            s += f"{self.label}: "
+
         if not self.opcode:
-            return ""
-        
-        s = f"{self.opcode} "
+            return s
+
+        s += " " * (20 - len(s))
+
+        s += f"{self.opcode} "
 
         for param in self.params:
             s += f"{param}"
