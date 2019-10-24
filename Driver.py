@@ -35,9 +35,15 @@ class Driver:
                 self.labels[lex.get_label()] = line_num
 
     def run(self):
-        cpu = CPU()
+        start = 1
+        try:
+            start = self.labels["main"]
+        except KeyError:
+            pass
 
-        while cpu.pc < len(self.code):
+        cpu = CPU(pc=start)
+
+        while cpu.pc < len(self.code) and cpu.pc > 0:
             inst = self.code[cpu.pc]
             if not inst:
                 cpu.pc += 1
@@ -47,5 +53,5 @@ class Driver:
             cpu.execute()
 
         cpu.reg_dump(mode="dec")
-        self.code_dump()
+        # self.code_dump()
         # cpu.mem_dump()
