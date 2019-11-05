@@ -2,7 +2,7 @@ class Arguments:
 
     def __init__(self, args):
         self.file = ""
-        self.mode = "dec"
+        self.mode = "ndec"
         self.debug = False
 
         if len(args) < 2:
@@ -13,6 +13,8 @@ class Arguments:
 
         if "-ndec" in args:
             self.mode = "ndec"
+        elif "-dec" in args:
+            self.mode = "dec"
         elif "-hex" in args:
             self.mode = "hex"
         elif "-bin" in args:
