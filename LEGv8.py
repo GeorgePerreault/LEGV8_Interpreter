@@ -1,26 +1,15 @@
 from src.Driver import Driver
 from src.Debugger import Debugger
+from src.Arguments import Arguments
 import sys
 
 def main():
-    file = ""
-    mode = "dec"
+    args = Arguments(sys.argv)
 
-    if len(sys.argv) < 2:
-        print("No input file given")
-        exit()
+    driver = Driver(args.file, mode=args.mode)
+    start(args.file, driver)
 
-    file = sys.argv[1]
-
-    if "-hex" in sys.argv:
-        mode = "hex"
-    elif "-bin" in sys.argv:
-        mode = "bin"
-
-    driver = Driver(file, mode=mode)
-    start(file, driver)
-
-    if "-d" in sys.argv:
+    if args.debug:
         debug(driver)
     else:
         run(driver)
