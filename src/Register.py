@@ -22,14 +22,23 @@ class Register:
         self.number = number
         self.value = BitNumber()
     
-    def assign(self, value):
+    def assign(self, other):
         if self.number == ZERO_REG:
             return
-        if type(value) is int:
-            self.value = BitNumber(value)
-        else:
-            self.value = value
+        _, y = self.__getxy(other)
+        self.value = y
 
+    def __getxy(self, other):
+        if type(other) is Register:
+            y = other.value
+        elif type(other) is int:
+            y = BitNumber(other)
+        elif type(other) is BitNumber:
+            y = other
+        else:
+            raise TypeError(f"Bad other in register __getxy: {type(other)}")
+        return self.value, y
+        
     def __repr__(self, mode="hex"):
         s = ""
         if self.number < 28:
@@ -44,37 +53,30 @@ class Register:
             s += f"0b{self.value.bits:064b}"
         return s
 
-    def __add__(self, other):
-        if type(other) is Register:
-            return self.value + other.value
-        elif type(other) is int:
-            return self.value + BitNumber(other)
+    def __add__(self, other, give_flags=False):
+        x, y = self.__getxy(other)
+        if give_flags:
+            return x.__add__(y, give_flags=True)
+        return x + y
 
-    def __sub__(self, other):
-        if type(other) is Register:
-            return self.value - other.value
-        elif type(other) is int:
-            return self.value - BitNumber(other)
+    def __sub__(self, other, give_flags=False):
+        x, y = self.__getxy(other)
+        if give_flags:
+            return x.__sub__(y, give_flags=True)
+        return x - y
 
     def __and__(self, other):
-        if type(other) is Register:
-            return self.value & other.value
-        elif type(other) is int:
-            return self.value & BitNumber(other)
+        x, y = self.__getxy(other)
+        return x & y
 
     def __or__(self, other):
-        if type(other) is Register:
-            return self.value | other.value
-        elif type(other) is int:
-            return self.value | BitNumber(other)
+        x, y = self.__getxy(other)
+        return x | y
 
     def __xor__(self, other):
-        if type(other) is Register:
-            return self.value ^ other.value
-        elif type(other) is int:
-            return self.value ^ BitNumber(other)
+        x, y = self.__getxy(other)
+        return x ^ y
 
     def __eq__(self, other):
-        if type(other) is int:
-            return self.value == other
-        return self.value == other.value
+        x, y = self.__getxy(other)
+        return x == y

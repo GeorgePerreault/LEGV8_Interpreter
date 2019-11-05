@@ -13,13 +13,12 @@ class CPU:
         self.op = None
         self.pc = pc
 
-        self.tmp_flags = Flags()
         self.saved_flags = Flags()
 
         self.memory = Memory()
 
-    def set_flags(self):
-        self.saved_flags.set_flags(self.tmp_flags)
+    def set_flags(self, flags):
+        self.saved_flags.set_flags(flags)
     
     def decode(self, instruction, labels):
         if not instruction.opcode:
@@ -51,11 +50,7 @@ class CPU:
         ret = self.op.execute(*self.params)
         
         if self.op.s:
-            self.tmp_flags.carry = ret.carry
-            self.tmp_flags.overflow = ret.overflow
-            self.tmp_flags.negative = ret.negative
-            self.tmp_flags.zero = ret.zero
-            self.set_flags()
+            self.set_flags(ret[1])
 
     def reg_dump(self, mode="dec", row_size=4):
         row_counter = 0
