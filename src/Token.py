@@ -1,5 +1,5 @@
-from code.Register import ZERO_REG, LINK_REG, FRAME_POINTER, STACK_POINTER, special_reg_names
-from code.InstructionSet import TOKEN_TYPE_NAMES, TTS
+from src.Register import ZERO_REG, LINK_REG, FRAME_POINTER, STACK_POINTER, special_reg_names
+from src.InstructionSet import TOKEN_TYPE_NAMES, TTS
 
 class TokenError(Exception):
     pass

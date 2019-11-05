@@ -1,5 +1,5 @@
-from code.Op import Op
-from code.BitNumber import BitNumber
+from src.Op import Op
+from src.BitNumber import BitNumber
 
 
 class Load(Op):

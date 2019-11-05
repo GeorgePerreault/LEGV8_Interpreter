@@ -1,5 +1,5 @@
-from code.Driver import Driver
-from code.Debugger import Debugger
+from src.Driver import Driver
+from src.Debugger import Debugger
 import sys
 
 def main():

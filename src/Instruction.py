@@ -1,4 +1,4 @@
-from code.InstructionSet import TTS
+from src.InstructionSet import TTS
 
 class Instruction:
     

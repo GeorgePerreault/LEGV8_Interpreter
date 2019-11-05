@@ -1,6 +1,6 @@
-from code.MathOps import Add, Sub, And, Or, Eor, LeftShift, RightShift
-from code.MemOps import Load, Store
-from code.BranchOps import *
+from src.MathOps import Add, Sub, And, Or, Eor, LeftShift, RightShift
+from src.MemOps import Load, Store
+from src.BranchOps import *
 
 literally_just_getting_rid_of_the_wildcard_import_warning = Op()
 
