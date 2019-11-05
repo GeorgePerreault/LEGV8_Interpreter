@@ -57,14 +57,11 @@ class LexicalAnalyzer:
         if self.cur_pos < len(self.cur_line) and self.cur_line[self.cur_pos] == ":":
             # Not an opcode was actually a label
             self.cur_pos += 1
-            
             self.set_label(opcode)
 
             if self.cur_pos >= len(self.cur_line):
                 return None
-
             self.error_check(" ")
-
             opcode = self.get_str()
 
         return opcode

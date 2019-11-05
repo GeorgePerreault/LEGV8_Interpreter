@@ -25,8 +25,8 @@ class CPU:
             self.params = None
             self.op = None
             return
-        self.params = []
 
+        self.params = []
         for i in instruction.params:
             if i.type == TTS.REGISTER:
                 self.params.append(self.registers[i.r_val])

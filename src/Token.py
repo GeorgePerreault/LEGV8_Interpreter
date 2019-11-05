@@ -17,7 +17,7 @@ class Token:
         self.l_val = None
 
         if len(val) < 1:
-            raise TokenError(f"Invalid blank token generated: '{val}'")
+            raise ValueError(f"Invalid blank token generated: '{val}'")
 
         if val[0] == "x":
             if val[1:] == "zr":

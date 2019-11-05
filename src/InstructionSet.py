@@ -1,4 +1,4 @@
-from src.MathOps import Add, Sub, And, Or, Eor, LeftShift, RightShift
+from src.MathOps import *
 from src.MemOps import Load, Store
 from src.BranchOps import *
 

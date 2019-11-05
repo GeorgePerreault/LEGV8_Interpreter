@@ -48,7 +48,7 @@ class Driver:
         lex = LexicalAnalyzer(self.file)
         line_num = 0
 
-        while True:
+        while not lex.eof:
             line_num += 1
 
             try:
@@ -57,11 +57,6 @@ class Driver:
                 raise ParserError(f"{line_num:>03} {e}")
 
             self.code.append(inst)
-
-            if inst is None:
-                if lex.eof:
-                    break
-                continue
 
             if lex.has_label:
                 self.labels[lex.get_label()] = line_num
@@ -83,10 +78,6 @@ class Driver:
 
         while self.active():
             self.exe_next()
-
-        # self.reg_dump(mode="dec")
-        # self.code_dump()
-        # self.mem_dump()
 
     def exe_next(self):
         inst = self.cur_inst()
