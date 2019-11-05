@@ -6,15 +6,13 @@ class Debugger():
     def __init__(self, driver):
         self.driver = driver
         self.action = "c"
-        self.spread = None
+        self.spread = 3
         self.dcp = DebugCommandParser()
 
     def set_dcp_vals(self, ret):
         self.action = ret[0]
-        if ret[1]:
-            self.driver.mode = ret[1]
-        if ret[2]:
-            self.spread = ret[2]
+        self.driver.mode = ret[1] if ret[1] else self.driver.mode
+        self.spread = ret[2]
 
     def input_ask(self):
         s = input("")
@@ -39,13 +37,7 @@ class Debugger():
         self.get_action()
 
     def handle_l(self):
-        if self.spread:
-            spread = self.spread
-        else:
-            spread = 3
-
-        self.driver.print_cur(spread=spread)
-        self.spread = None
+        self.driver.print_cur(spread=self.spread if self.spread else 3)
         self.get_action()
 
     def handle_m(self):

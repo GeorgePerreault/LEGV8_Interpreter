@@ -28,7 +28,7 @@ class DebugCommandParser:
             except ValueError:
                 raise DebugCommandError(f"Invalid parameter for command list: {param}")
         elif action[0] == "m":
-            if param not in ("ndec", "dec", "hex", "bin"):
+            if param not in ("dec", "udec", "hex", "bin"):
                 raise DebugCommandError(f"Invalid parameter for command mode: {param}")
             mode = param
 

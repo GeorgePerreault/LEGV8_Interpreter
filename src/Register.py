@@ -41,17 +41,19 @@ class Register:
         
     def __repr__(self, mode="dec"):
         s = ""
+        
         if self.number < 28:
                 s += f"X{self.number:02}: "
         else:
             s += f"{special_reg_names(self.number):>3}: "
+        
         if mode == "dec":
-            s += f"{self.value.bits:020}"
-        elif mode == "ndec":
             if self.value[-1] == 1:
                 s += f"-{0xFFFFFFFFFFFFFFFF - self.value.bits + 1:019}"
             else:
                 s += f"+{self.value.bits:019}"
+        elif mode == "udec":
+            s += f"{self.value.bits:020}"
         elif mode == "hex":
             s += f"0x{self.value.bits:016x}"
         elif mode == "bin":
