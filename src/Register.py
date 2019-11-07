@@ -7,13 +7,13 @@ STACK_POINTER = 28
 
 
 def special_reg_names(i):
-    if i == 28:
+    if i == STACK_POINTER:
         return "SP"
-    if i == 29:
+    if i == FRAME_POINTER:
         return "FP"
-    if i == 30:
+    if i == LINK_REG:
         return "LR"
-    if i == 31:
+    if i == ZERO_REG:
         return "XZR"
 
 class Register:

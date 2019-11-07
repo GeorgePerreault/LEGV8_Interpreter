@@ -65,8 +65,6 @@ class BitNumber:
 
         ret = BitNumber(res)
 
-        # print(f"{bin(self.bits)} + {bin(other.bits)} = {bin(ret.bits)}")
-
         if give_flags:
             flags = Flags()
             flags.carry = c

@@ -8,7 +8,7 @@ from src.MathOps import Add, Sub
 class CPU:
 
     def __init__(self, pc=1):
-        self.registers = [Register(i) for i in range(32)] #ALERT: Hardcoded number of registers
+        self.registers = [Register(i) for i in range(32)]
         self.params = None
         self.op = None
         self.pc = pc
