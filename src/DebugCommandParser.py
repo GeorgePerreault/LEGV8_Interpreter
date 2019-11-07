@@ -25,6 +25,8 @@ class DebugCommandParser:
         if action[0] == "l":
             try:
                 spread = int(param)
+                if spread < 1:
+                    raise ValueError
             except ValueError:
                 raise DebugCommandError(f"Invalid parameter for command list: {param}")
         elif action[0] == "m":
