@@ -12,6 +12,7 @@ class BranchOp(Op):
 class CondBranch(BranchOp):
 
     def __init__(self, condition=None):
+        self.s = False
         self.condition = condition
 
     def execute(self, reg, goto):

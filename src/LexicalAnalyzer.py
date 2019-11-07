@@ -49,7 +49,12 @@ class LexicalAnalyzer:
             raise ParserError(f"{self.cur_line}\nInvalid syntax. Expected: '{match}' but got {self.cur_line[self.cur_pos]}")
         self.cur_pos += 1
 
-    
+    def get_breakpoint(self):
+        if len(self.cur_line) > 1 and self.cur_line[-1] == "@" and self.cur_line[-2] == " ":
+            self.cur_line = self.cur_line[:-2]
+            return True
+        return False
+
     def get_opcode(self):
         opcode = self.get_str()
         if opcode == "":
@@ -71,9 +76,7 @@ class LexicalAnalyzer:
         params = []
         
         for expec in expected_params:
-            method = self.get_one
-            if expec in (TTS.REGISTER, TTS.IMMEDIATE, TTS.LABEL):
-                method = self.get_str
+            method = self.get_str if expec in (TTS.REGISTER, TTS.IMMEDIATE, TTS.LABEL) else self.get_one
 
             t = Token(method())
             if t.type != expec:
@@ -98,14 +101,9 @@ class LexicalAnalyzer:
 
         if self.cur_line == "":
             return None
-
         
         self.cur_pos = 0
-        b_point = False
-
-        if len(self.cur_line) > 1 and self.cur_line[-1] == "@" and self.cur_line[-2] == " ":
-            b_point = True
-            self.cur_line = self.cur_line[:-2]
+        b_point = self.get_breakpoint()
 
         opcode = self.get_opcode()
         if not opcode:
