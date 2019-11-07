@@ -29,6 +29,7 @@ class LexicalAnalyzer:
         self.has_label = True
         self.cur_label = label
 
+    # Gets characters (and advances our pos) until a space or other unallowed character is found
     def get_str(self):
         s = ""
         while self.cur_pos < len(self.cur_line) and self.cur_line[self.cur_pos] in ALLOWED_CHARS:
@@ -36,12 +37,14 @@ class LexicalAnalyzer:
             self.cur_pos += 1
         return s
 
+    # Gets just one character
     def get_one(self):
         if self.cur_pos >= len(self.cur_line):
             return ""
         self.cur_pos += 1
         return self.cur_line[self.cur_pos - 1]
 
+    # Raises an error if the current character isn't match
     def error_check(self, match):
         if self.cur_pos >= len(self.cur_line):
             raise ParserError(f"{self.cur_line}\nInvalid syntax. Expected: '{match}' but line was empty")
@@ -49,12 +52,14 @@ class LexicalAnalyzer:
             raise ParserError(f"{self.cur_line}\nInvalid syntax. Expected: '{match}' but got {self.cur_line[self.cur_pos]}")
         self.cur_pos += 1
 
+    # Returns true if there's a breakpoint and also removes it from the line
     def get_breakpoint(self):
         if len(self.cur_line) > 1 and self.cur_line[-1] == "@" and self.cur_line[-2] == " ":
             self.cur_line = self.cur_line[:-2]
             return True
         return False
 
+    # Returns the opcode (or None if these isn't one)
     def get_opcode(self):
         opcode = self.get_str()
         if opcode == "":
@@ -71,7 +76,7 @@ class LexicalAnalyzer:
 
         return opcode
 
-
+    # Gets params and makes sure the parameters are what we're expecting for the opcode 
     def get_params(self, expected_params):
         params = []
         
@@ -86,19 +91,23 @@ class LexicalAnalyzer:
             if expec == TTS.COMMA:
                 self.error_check(" ")
 
+        # If there were more characters than expected
         if self.cur_pos < len(self.cur_line):
             raise ParserError(f"Unexpected token: {self.cur_line[self.cur_pos:]}")
 
         return params
 
     def get_instruction(self):
-        og_line = self.file.readline()
+        # Parser is non-case sensitive
+        og_line = self.file.readline().lower()
         if og_line == "":
             self.eof = True
             return None
         
-        self.cur_line = " ".join(og_line.split()) #Removes excess spaces
+        # Removes excess spaces
+        self.cur_line = " ".join(og_line.split())
 
+        # Blank line but not end of file
         if self.cur_line == "":
             return None
         

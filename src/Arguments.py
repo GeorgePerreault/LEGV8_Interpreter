@@ -1,6 +1,5 @@
-
-# Deals with parsing the arguments passed to the program on run
 class Arguments:
+    # This class parses the arguments passed to the program on run
 
     def __init__(self, args):
         self.file = ""

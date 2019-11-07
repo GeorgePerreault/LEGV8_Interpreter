@@ -5,12 +5,10 @@ class TokenError(Exception):
     pass
 
 class Token:
-    
-    def __init__(self, val: str):
-        self.val = val
 
-        val = val.lower()
-        
+    # All the Token parsing is done in init    
+    def __init__(self, val: str):
+        self.val = val        
         self.type = None
         self.r_val = None
         self.i_val = None
@@ -18,7 +16,8 @@ class Token:
 
         if len(val) < 1:
             raise ValueError(f"Invalid blank token generated: '{val}'")
-
+        
+        # Checking for register
         if val[0] == "x":
             if val[1:] == "zr":
                 self.r_val = ZERO_REG
@@ -29,6 +28,7 @@ class Token:
                 self.type = TTS.REGISTER
                 return
             except ValueError:
+                # Could potentially still be a label starting with x
                 pass
 
         if val in ["lr", "fp", "sp"]:

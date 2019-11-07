@@ -17,6 +17,8 @@ class Instruction:
         if not self.opcode:
             return s
 
+        # Padds the string up to 20 spaces from the line number
+        # Normal formatting didn't seem to work as the line number is added later
         s += " " * (20 - len(s))
 
         s += f"{self.opcode} "

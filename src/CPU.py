@@ -57,7 +57,6 @@ class CPU:
         if self.op.s:
             self.set_flags(ret[1])
 
-    # Prints out all registers
     def reg_dump(self, mode="dec", row_size=4):
         row_counter = 0
         s = ""

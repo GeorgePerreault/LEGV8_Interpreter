@@ -1,4 +1,5 @@
 class Flags:
+    # Just a simple cass to package the flags together  
 
     def __init__(self):
         self.carry = 0

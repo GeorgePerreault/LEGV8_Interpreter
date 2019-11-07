@@ -2,11 +2,14 @@ from src.MathOps import *
 from src.MemOps import Load, Store
 from src.BranchOps import *
 
+# Self-explanatory
 literally_just_getting_rid_of_the_wildcard_import_warning = Op()
 
+# These tell you what subscript of the instruction set the func or params are
 FUNC = 0
 PARAMS = 1
 
+# Token type constants
 class TTS:
     COMMA = 0
     REGISTER = 1
@@ -16,6 +19,7 @@ class TTS:
     CLOSE_SQUARE = 5
     HASH = 6
 
+# Used for error printing
 TOKEN_TYPE_NAMES = (
     "COMMA",
     "REGISTER",
@@ -26,13 +30,14 @@ TOKEN_TYPE_NAMES = (
     "HASH"
 )
 
+# Currenty every instruction is in one of these forms
+# Declaring them here saves space
 r_r_r = (TTS.REGISTER, TTS.COMMA, TTS.REGISTER, TTS.COMMA, TTS.REGISTER)
 r_r_i = (TTS.REGISTER, TTS.COMMA, TTS.REGISTER, TTS.COMMA, TTS.HASH, TTS.IMMEDIATE)
 mem = (TTS.REGISTER, TTS.COMMA, TTS.OPEN_SQUARE, TTS.REGISTER, TTS.COMMA, TTS.HASH, TTS.IMMEDIATE, TTS.CLOSE_SQUARE)
 br = (TTS.LABEL,)
 reg = (TTS.REGISTER,)
 cbr = (TTS.REGISTER, TTS.COMMA, TTS.LABEL)
-EMPTY = tuple()
 
 INSTRUCTION_SET = {
     "add": (Add(), r_r_r),

@@ -27,6 +27,7 @@ class Driver:
     def cur_inst(self):
         return self.code[self.cpu.pc]
 
+    # Prints the current instruction along with spread instructions above and below it 
     def print_cur(self, spread=None):
         if spread:
             self.__print_range(self.cpu.pc - spread, self.cpu.pc + spread + 1)
@@ -44,6 +45,8 @@ class Driver:
     def mem_dump(self):
         self.cpu.mem_dump()
 
+    # Fills out self.code and self.labels by parsing the input 
+    # Must be run before execution
     def generate_code(self):
         lex = LexicalAnalyzer(self.file)
         line_num = 0
@@ -61,6 +64,7 @@ class Driver:
             if lex.has_label:
                 self.labels[lex.get_label()] = line_num
 
+    # If there's a main label we start there, otherwise at line 1
     def setup(self):
         start = 1
         try:
@@ -70,6 +74,7 @@ class Driver:
 
         self.cpu = CPU(pc=start)
 
+    # Returns if the execution is still in bounds or not
     def active(self):
         return self.cpu.pc < len(self.code) and self.cpu.pc > 0 
 

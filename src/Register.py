@@ -28,6 +28,7 @@ class Register:
         _, y = self.__getxy(other)
         self.value = y
 
+    # Gets the values for the data model ops
     def __getxy(self, other):
         if type(other) is Register:
             y = other.value
@@ -38,7 +39,8 @@ class Register:
         else:
             raise TypeError(f"Bad other in register __getxy: {type(other)}")
         return self.value, y
-        
+
+    # Allowed modes are dec, udec (unsigned decimal), hex, and bin        
     def __repr__(self, mode="dec"):
         s = ""
         

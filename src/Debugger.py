@@ -71,4 +71,5 @@ class Debugger():
 
             inst = self.driver.cur_inst()
             if inst and inst.b_point:
+               # Stop on breakpoints
                 self.action = "s"

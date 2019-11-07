@@ -1,5 +1,6 @@
 class Memory:
 
+    # A dictionary is used to mimic an array of size 2^64
     def __init__(self, bounds=0xFFFFFFFFFFFFFFFF):
         self.memory = {}
         self.bounds = bounds

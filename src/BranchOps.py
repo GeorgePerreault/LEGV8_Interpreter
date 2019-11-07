@@ -27,7 +27,7 @@ class BranchReg(BranchOp):
     def execute(self, goto_reg):
         self.cpu.pc = int(goto_reg.value)
 
-# The following checks for each branch were pulled from a slide
+# The following checks for each branch were pulled from a slide that I assume is correct
 
 class BranchEQ(BranchOp):
     def branch_on(self):
