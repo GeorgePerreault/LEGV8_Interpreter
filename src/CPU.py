@@ -14,18 +14,20 @@ class CPU:
         self.pc = pc
 
         self.saved_flags = Flags()
-
         self.memory = Memory()
 
     def set_flags(self, flags):
         self.saved_flags.set_flags(flags)
     
+    # Readies an instruction to be executed
     def decode(self, instruction, labels):
+        # This is for if the instruction is just a label
         if not instruction.opcode:
             self.params = None
             self.op = None
             return
 
+        # Changing the tokens into usable values 
         self.params = []
         for i in instruction.params:
             if i.type == TTS.REGISTER:
@@ -42,6 +44,7 @@ class CPU:
         self.op = INSTRUCTION_SET[instruction.opcode][FUNC](self)
 
     def execute(self):
+        # pc inc is done before execution to not mess up jumps
         self.pc += 1
 
         if not self.op:
@@ -49,9 +52,12 @@ class CPU:
 
         ret = self.op.execute(*self.params)
         
+        # op.s says if it was a set flag instruction
+        # ret should always be a len(2) tuple if true
         if self.op.s:
             self.set_flags(ret[1])
 
+    # Prints out all registers
     def reg_dump(self, mode="dec", row_size=4):
         row_counter = 0
         s = ""

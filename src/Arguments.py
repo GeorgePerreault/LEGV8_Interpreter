@@ -1,3 +1,5 @@
+
+# Deals with parsing the arguments passed to the program on run
 class Arguments:
 
     def __init__(self, args):

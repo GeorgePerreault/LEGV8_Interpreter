@@ -4,6 +4,7 @@ class DebugCommandError(Exception):
 class DebugCommandParser:
 
     def __init__(self):
+        # Modeled after gdb
         self.ALLOWED_ACTIONS = ("continue", "step", "list", "mode", "c", "s", "l", "m")
 
 
@@ -17,6 +18,7 @@ class DebugCommandParser:
 
         if action not in self.ALLOWED_ACTIONS:
             raise DebugCommandError(f"Invalid command: {action}")
+        # Set the  action just be the first letter if it wasn't already
         action = action[0]
 
         if not param:
@@ -29,6 +31,7 @@ class DebugCommandParser:
                     raise ValueError
             except ValueError:
                 raise DebugCommandError(f"Invalid parameter for command list: {param}")
+
         elif action[0] == "m":
             if param not in ("dec", "udec", "hex", "bin"):
                 raise DebugCommandError(f"Invalid parameter for command mode: {param}")

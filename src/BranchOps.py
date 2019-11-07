@@ -1,7 +1,6 @@
 from src.Op import Op
 
 class BranchOp(Op):
-
     def branch_on(self):
         return True
 
@@ -10,9 +9,8 @@ class BranchOp(Op):
             self.cpu.pc = goto
 
 class CondBranch(BranchOp):
-
     def __init__(self, condition=None):
-        self.s = False
+        super().__init__()
         self.condition = condition
 
     def execute(self, reg, goto):
@@ -20,15 +18,16 @@ class CondBranch(BranchOp):
             self.cpu.pc = goto
 
 class BranchLink(BranchOp):
-    
     def execute(self, goto):
+        # 30 is the link register
         self.cpu.registers[30].assign(self.cpu.pc)
         self.cpu.pc = goto
 
-class BranchReg(BranchOp):
-    
+class BranchReg(BranchOp):    
     def execute(self, goto_reg):
         self.cpu.pc = int(goto_reg.value)
+
+# The following checks for each branch were pulled from a slide
 
 class BranchEQ(BranchOp):
     def branch_on(self):

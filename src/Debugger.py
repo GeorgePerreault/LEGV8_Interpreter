@@ -14,6 +14,7 @@ class Debugger():
         self.driver.mode = ret[1] if ret[1] else self.driver.mode
         self.spread = ret[2]
 
+    # Returns a bool of whether or not the command worked
     def input_ask(self):
         s = input("")
         if s == "":
@@ -28,18 +29,22 @@ class Debugger():
         return True
 
     def get_action(self):
+        # Keep asking for a command until one works
         while not self.input_ask():
             pass
-
+    
+    # Step command goes one line down
     def handle_s(self):
         self.driver.reg_dump()
         self.driver.print_cur()
         self.get_action()
 
+    # List command lists nearby lines
     def handle_l(self):
         self.driver.print_cur(spread=self.spread if self.spread else 3)
         self.get_action()
 
+    # Mode command changes the current print mode
     def handle_m(self):
         self.driver.reg_dump()
         self.get_action()
@@ -59,6 +64,8 @@ class Debugger():
             if inst and self.action == "m":
                 self.handle_m()
                 continue
+            
+            # Beacuse continue is none of these, it will cause the program to run un-interrupted 
 
             self.driver.exe_next()
 

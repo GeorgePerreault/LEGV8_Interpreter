@@ -1,12 +1,13 @@
 from src.Flags import Flags
 
-
+# Int that simulates having only 64 bits instead of infinite percision like python does
 class BitNumber:
 
     def __init__(self, val=0, n_bits=64):
         self.bits = val & 0xFFFFFFFFFFFFFFFF
         self.n_bits = n_bits
 
+    # Determines what to use for the data model functions
     def __getxy(self, other):
         if type(other) is int:
             y = other
@@ -27,7 +28,6 @@ class BitNumber:
 
         while n > 0 or count < 64:
             yield n % 2
-
             count += 1
             n >>= 1
 
@@ -51,6 +51,7 @@ class BitNumber:
         x, y = self.__getxy(other)
         return BitNumber(x ^ y)
 
+    # Allows you to have a carry in and/or have the flag results also be returned 
     def __add__(self, other, give_flags=False, c=0):
         res = 0
         const_one = 1
@@ -75,6 +76,7 @@ class BitNumber:
             return (ret, flags)
         return ret
 
+    # Subtraction is done by doing a + (-b)
     def __sub__(self, other, give_flags=False):
         if type(other) is int:
             return self.__add__(~BitNumber(other), give_flags=give_flags, c=1)
