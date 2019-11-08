@@ -1,23 +1,21 @@
 from src.Driver import Driver
 from src.Debugger import Debugger
 from src.Arguments import Arguments
+from src.Exceptions import LEGError
 import sys
 
 def main():
     args = Arguments(sys.argv)
 
     driver = Driver(args.file, mode=args.mode)
-    start(args.file, driver)
 
-    if args.debug:
-        debug(driver)
-    else:
-        run(driver)
-
-def start(file, driver):
     try:
         driver.generate_code()
-    except Exception as e:
+        if args.debug:
+            debug(driver)
+        else:
+            run(driver)
+    except LEGError as e:
         print(f"-----ERROR-----\n{e}")
         exit()
 

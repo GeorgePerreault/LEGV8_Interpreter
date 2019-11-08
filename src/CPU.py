@@ -4,6 +4,7 @@ from src.Memory import Memory
 from src.InstructionSet import INSTRUCTION_SET, TTS, FUNC
 from src.Flags import Flags
 from src.MathOps import Add, Sub
+from src.Exceptions import ExecutionError
 
 class CPU:
 
@@ -38,7 +39,7 @@ class CPU:
                 try:
                     goto = labels[i.l_val]
                 except KeyError:
-                    raise KeyError(f"Invalid label: {i.l_val}")
+                    raise ExecutionError(f"Invalid label: {i.l_val}")
                 self.params.append(goto)
 
         self.op = INSTRUCTION_SET[instruction.opcode][FUNC](self)

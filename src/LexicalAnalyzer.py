@@ -1,12 +1,10 @@
 from string import ascii_letters
 from src.Instruction import Instruction
-from src.Token import Token, TOKEN_TYPE_NAMES, TokenError
+from src.Token import Token, TOKEN_TYPE_NAMES
 from src.InstructionSet import INSTRUCTION_SET, TTS, PARAMS
+from src.Exceptions import ParserError, TokenError
 
 ALLOWED_CHARS = {*ascii_letters, "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "#"}
-
-class ParserError(Exception):
-    pass
 
 class LexicalAnalyzer:
     def __init__(self, file):
@@ -127,7 +125,7 @@ class LexicalAnalyzer:
         try:
             params = self.get_params(expected_params)
         except (ParserError, TokenError) as e:
-            raise ParserError(f"{og_line.strip()}\nIn parsing of opcode '{opcode}'\n{e}")
+            raise ParserError(f"{og_line.strip()}\n{e}")
 
         if self.has_label:
             return Instruction(opcode, params, label=self.cur_label, b_point=b_point)

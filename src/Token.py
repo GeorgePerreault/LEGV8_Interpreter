@@ -1,8 +1,6 @@
 from src.Register import ZERO_REG, LINK_REG, FRAME_POINTER, STACK_POINTER, special_reg_names
 from src.InstructionSet import TOKEN_TYPE_NAMES, TTS
-
-class TokenError(Exception):
-    pass
+from src.Exceptions import TokenError
 
 class Token:
 
@@ -47,7 +45,7 @@ class Token:
                 self.type = TTS.IMMEDIATE
                 return
             except ValueError:
-                raise TokenError(f"Invalid immediate value: {val[1:]}")
+                raise TokenError(f"Invalid immediate value: {val}")
 
         if val == "[":
             self.type = TTS.OPEN_SQUARE

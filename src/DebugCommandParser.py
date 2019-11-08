@@ -1,5 +1,4 @@
-class DebugCommandError(Exception):
-    pass
+from src.Exceptions import DebugCommandError
 
 class DebugCommandParser:
 
