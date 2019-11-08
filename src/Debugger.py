@@ -7,7 +7,7 @@ class Debugger():
         self.driver = driver
         self.action = "c"
         self.spread = 3
-        self.broke = False
+        self.act_before_broke = None
         self.dcp = DebugCommandParser()
 
     def set_dcp_vals(self, ret):
@@ -19,9 +19,11 @@ class Debugger():
     def input_ask(self):
         s = input("")
         if s == "":
-            self.action = "c" if self.broke else self.action
+            # If you enter nothing, use the last action
+            # Breakpoints change the action so I have to adjust for that
+            self.action = self.act_before_broke if self.act_before_broke else self.action
             return True
-        self.broke = False
+        self.act_before_broke = None
 
         try:
             self.set_dcp_vals(self.dcp.parse_command(s))
@@ -75,5 +77,5 @@ class Debugger():
             inst = self.driver.cur_inst()
             if inst and inst.b_point:
                 # Stop on breakpoints
-                self.broke = True
+                self.act_before_broke = self.action
                 self.action = "s"
