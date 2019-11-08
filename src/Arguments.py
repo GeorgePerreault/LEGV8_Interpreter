@@ -12,14 +12,9 @@ class Arguments:
 
         self.file = args[1]
 
-        if "-dec" in args:
-            self.mode = "dec"
-        elif "-udec" in args:
-            self.mode = "udec"
-        elif "-hex" in args:
-            self.mode = "hex"
-        elif "-bin" in args:
-            self.mode = "bin"
+        for mode in ("dec", "udec", "hex", "bin"):
+            if f"-{mode}" in args:
+                self.mode = mode
 
         if "-d" in args:
             self.debug = True
