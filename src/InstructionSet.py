@@ -53,8 +53,8 @@ INSTRUCTION_SET = {
     "and": (And(), r_r_r),
     "andi": (And(), r_r_i),
 
-    "or": (Or(), r_r_r),
-    "ori": (Or(), r_r_i),
+    "orr": (Orr(), r_r_r),
+    "orri": (Orr(), r_r_i),
 
     "eor": (Eor(), r_r_r),
     "eori": (Eor(), r_r_i),

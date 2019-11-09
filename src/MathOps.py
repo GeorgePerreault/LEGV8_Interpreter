@@ -26,7 +26,7 @@ class And(Op):
     def execute(self, x, y, z):
         x.assign(y & z)
 
-class Or(Op):
+class Orr(Op):
     def execute(self, x, y, z):
         x.assign(y | z)
 
