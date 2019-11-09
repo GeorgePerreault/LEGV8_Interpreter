@@ -11,7 +11,11 @@ class Memory:
     def __getitem__(self, i):
         if i > self.bounds or i < 0:
             raise IndexError(f"Address {i} is out of bounds")
-        return self.memory[i]
+        try:
+            ret = self.memory[i]
+        except KeyError:
+            return 0
+        return ret
 
     def __setitem__(self, i, v):
         if i > self.bounds or i < 0:
