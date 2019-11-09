@@ -39,7 +39,7 @@ class Debugger():
             pass
     
     # Step command goes one line down
-    def handle_s(self):
+    def handle_n(self):
         self.driver.reg_dump()
         self.driver.print_cur()
         self.get_action()
@@ -59,8 +59,8 @@ class Debugger():
         inst = self.driver.cur_inst()
 
         while self.driver.active():
-            if inst and self.action == "s":
-                self.handle_s()
+            if inst and self.action == "n":
+                self.handle_n()
 
             if inst and self.action == "l":
                 self.handle_l()
@@ -78,4 +78,4 @@ class Debugger():
             if inst and inst.b_point:
                 # Stop on breakpoints
                 self.act_before_broke = self.action
-                self.action = "s"
+                self.action = "n"

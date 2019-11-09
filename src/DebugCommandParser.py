@@ -4,7 +4,7 @@ class DebugCommandParser:
 
     def __init__(self):
         # Modeled after gdb
-        self.ALLOWED_ACTIONS = ("continue", "step", "list", "mode", "c", "s", "l", "m")
+        self.ALLOWED_ACTIONS = ("continue", "next", "list", "mode", "c", "n", "l", "m")
 
 
     def parse_command(self, s):        
@@ -17,7 +17,7 @@ class DebugCommandParser:
 
         if action not in self.ALLOWED_ACTIONS:
             raise DebugCommandError(f"Invalid command: {action}")
-        # Set the  action just be the first letter if it wasn't already
+        # Set the action to just be the first letter if it wasn't already
         action = action[0]
 
         if not param:
