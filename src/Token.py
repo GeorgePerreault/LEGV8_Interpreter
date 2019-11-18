@@ -1,6 +1,6 @@
 from src.Register import ZERO_REG, LINK_REG, FRAME_POINTER, STACK_POINTER, special_reg_names
 from src.InstructionSet import TOKEN_TYPE_NAMES, TTS
-from src.Exceptions import TokenError
+from src.Exceptions import TokenError, ImmediateError
 
 class Token:
 
@@ -39,6 +39,8 @@ class Token:
         if expec == TTS.IMMEDIATE:
             try:
                 self.i_val = int(val)
+                if self.i_val > 4095 or self.i_val < 0:
+                    raise ImmediateError
                 self.type = TTS.IMMEDIATE
                 return
             except ValueError:

@@ -2,7 +2,7 @@ from string import ascii_letters
 from src.Instruction import Instruction
 from src.Token import Token, TOKEN_TYPE_NAMES
 from src.InstructionSet import INSTRUCTION_SET, TTS, PARAMS
-from src.Exceptions import ParserError, TokenError
+from src.Exceptions import ParserError, TokenError, ImmediateError
 
 ALLOWED_CHARS = {*ascii_letters, "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."}
 SINGLE_CHAR_TOKENS = {",", "[", "]", "#"}
@@ -71,7 +71,9 @@ class LexicalAnalyzer:
                 t = Token(val, expec)
             except TokenError:
                 raise ParserError(f"Expected {TOKEN_TYPE_NAMES[expec]} but got: {val}")
-    
+            except ImmediateError:
+                raise ParserError(f"Invalid immediate value: {val}. Must be less than 4096") 
+
             params.append(t)
 
             if expec == TTS.COMMA:

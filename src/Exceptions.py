@@ -12,3 +12,6 @@ class DebugCommandError(LEGError):
 
 class ExecutionError(LEGError):
     pass
+
+class ImmediateError(LEGError):
+    pass
