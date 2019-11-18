@@ -4,7 +4,8 @@ from src.Token import Token, TOKEN_TYPE_NAMES
 from src.InstructionSet import INSTRUCTION_SET, TTS, PARAMS
 from src.Exceptions import ParserError, TokenError
 
-ALLOWED_CHARS = {*ascii_letters, "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "#"}
+ALLOWED_CHARS = {*ascii_letters, "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."}
+SINGLE_CHAR_TOKENS = {",", "[", "]", "#"}
 
 class LexicalAnalyzer:
     def __init__(self, file):
@@ -27,21 +28,6 @@ class LexicalAnalyzer:
         self.has_label = True
         self.cur_label = label
 
-    # Gets characters (and advances our pos) until a space or other unallowed character is found
-    def get_str(self):
-        s = ""
-        while self.cur_pos < len(self.cur_line) and self.cur_line[self.cur_pos] in ALLOWED_CHARS:
-            s += self.cur_line[self.cur_pos]
-            self.cur_pos += 1
-        return s
-
-    # Gets just one character
-    def get_one(self):
-        if self.cur_pos >= len(self.cur_line):
-            return ""
-        self.cur_pos += 1
-        return self.cur_line[self.cur_pos - 1]
-
     # Raises an error if the current character isn't match
     def error_check(self, match):
         if self.cur_pos >= len(self.cur_line):
@@ -59,7 +45,7 @@ class LexicalAnalyzer:
 
     # Returns the opcode (or None if these isn't one)
     def get_opcode(self):
-        opcode = self.get_str()
+        opcode = self.get_token()
         if opcode == "":
             raise ParserError(f"{self.cur_line}\nExpected opcode")
         if self.cur_pos < len(self.cur_line) and self.cur_line[self.cur_pos] == ":":
@@ -70,7 +56,7 @@ class LexicalAnalyzer:
             if self.cur_pos >= len(self.cur_line):
                 return None
             self.error_check(" ")
-            opcode = self.get_str()
+            opcode = self.get_token()
 
         return opcode
 
@@ -79,11 +65,13 @@ class LexicalAnalyzer:
         params = []
         
         for expec in expected_params:
-            method = self.get_str if expec in (TTS.REGISTER, TTS.IMMEDIATE, TTS.LABEL) else self.get_one
-
-            t = Token(method())
-            if t.type != expec:
-                raise ParserError(f"Expected {TOKEN_TYPE_NAMES[expec]} but got: {t}")
+            val = self.get_token()
+    
+            try:
+                t = Token(val, expec)
+            except TokenError:
+                raise ParserError(f"Expected {TOKEN_TYPE_NAMES[expec]} but got: {val}")
+    
             params.append(t)
 
             if expec == TTS.COMMA:
@@ -94,6 +82,23 @@ class LexicalAnalyzer:
             raise ParserError(f"Unexpected token: {self.cur_line[self.cur_pos:]}")
 
         return params
+
+    def get_token(self):
+        s = ""
+        while self.cur_pos < len(self.cur_line):
+            c = self.cur_line[self.cur_pos]
+
+            if c not in ALLOWED_CHARS:
+                if c in SINGLE_CHAR_TOKENS and s == "":
+                    self.cur_pos += 1
+                    return c
+                break
+
+            s += c
+            self.cur_pos += 1
+
+        return s
+
 
     def get_instruction(self):
         # Parser is non-case sensitive
@@ -126,7 +131,7 @@ class LexicalAnalyzer:
             params = self.get_params(expected_params)
         except (ParserError, TokenError) as e:
             raise ParserError(f"{og_line.strip()}\n{e}")
-
+    
         if self.has_label:
             return Instruction(opcode, params, label=self.cur_label, b_point=b_point)
         return Instruction(opcode, params, b_point=b_point)
