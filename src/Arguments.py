@@ -12,7 +12,7 @@ class Arguments:
 
         self.file = args[1]
 
-        for mode in ("dec", "udec", "hex", "bin"):
+        for mode in {"dec", "udec", "hex", "bin"}:
             if f"-{mode}" in args:
                 self.mode = mode
 
