@@ -82,6 +82,10 @@ class BitNumber:
             return self.__add__(~BitNumber(other), give_flags=give_flags, c=1)
         return self.__add__(~other, give_flags=give_flags, c=1)
 
+    def __mul__(self, other):
+        x, y = self.__getxy(other)
+        return x * y
+
     def __eq__(self, other):
         x, y = self.__getxy(other)
         return x == y

@@ -64,6 +64,8 @@ class Token:
             self.l_val = val
             return
 
+        raise TokenError
+
     def __repr__(self):
         if self.type == TTS.REGISTER:
             if self.r_val < 28:

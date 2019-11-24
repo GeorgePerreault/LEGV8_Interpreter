@@ -22,6 +22,11 @@ class Sub(Op):
             x.assign(res)
             return res
 
+class Mul(Op):
+    def execute(self, x, y, z):
+        res = y * z
+        x.assign(res)
+
 class And(Op):
     def execute(self, x, y, z):
         x.assign(y & z)

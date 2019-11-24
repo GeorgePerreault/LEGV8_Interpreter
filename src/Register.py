@@ -74,6 +74,10 @@ class Register:
             return x.__sub__(y, give_flags=True)
         return x - y
 
+    def __mul__(self, other):
+        x, y = self.__getxy(other)
+        return x * y
+
     def __and__(self, other):
         x, y = self.__getxy(other)
         return x & y

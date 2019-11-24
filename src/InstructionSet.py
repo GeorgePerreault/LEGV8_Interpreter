@@ -50,6 +50,8 @@ INSTRUCTION_SET = {
     "subs": (Sub(s=True), r_r_r),
     "subis": (Sub(s=True), r_r_i),
 
+    "mul": (Mul(), r_r_r),
+
     "and": (And(), r_r_r),
     "andi": (And(), r_r_i),
 
