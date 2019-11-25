@@ -1,7 +1,7 @@
 # Usage
 
 ```
-python ./LEGv8.py input
+python ./LEGv8.py input_file
 ```
 
 Make sure the ```src``` folder is in the same directory as ```LEGv8.py```
