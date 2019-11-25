@@ -4,7 +4,7 @@ class DebugCommandParser:
 
     def __init__(self):
         # Modeled after gdb
-        self.ALLOWED_ACTIONS = ("continue", "next", "list", "mode", "c", "n", "l", "m")
+        self.ALLOWED_ACTIONS = ("continue", "next", "list", "mode", "help", "c", "n", "l", "m", "h")
 
 
     def parse_command(self, s):        

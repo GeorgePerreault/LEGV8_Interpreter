@@ -18,3 +18,7 @@ class Arguments:
 
         if "-d" in args:
             self.debug = True
+
+        if "-help" in args:
+            print("Please see the README, I'm too lazy to restate it here")
+            exit()

@@ -29,12 +29,25 @@ class LexicalAnalyzer:
         self.has_label = True
         self.cur_label = label
 
+    def in_bounds(self):
+        return self.cur_pos < len(self.cur_line)
+
+    def cur_char(self):
+        return self.cur_line[self.cur_pos]
+
+    def remove_comments(self):
+        i = self.cur_line.find("//")
+        if i != -1:
+            self.cur_line = self.cur_line[:i]
+            return True
+        return False
+
     # Raises an error if the current character isn't match
     def error_check(self, match):
-        if self.cur_pos >= len(self.cur_line):
+        if not self.in_bounds():
             raise ParserError(f"{self.cur_line}\nInvalid syntax. Expected: '{match}' but line was empty")
-        if self.cur_line[self.cur_pos] != match:
-            raise ParserError(f"{self.cur_line}\nInvalid syntax. Expected: '{match}' but got {self.cur_line[self.cur_pos]}")
+        if self.cur_char() != match:
+            raise ParserError(f"{self.cur_line}\nInvalid syntax. Expected: '{match}' but got {self.cur_char()}")
         self.cur_pos += 1
 
     # Returns true if there's a breakpoint and also removes it from the line
@@ -49,12 +62,12 @@ class LexicalAnalyzer:
         opcode = self.get_token()
         if opcode == "":
             raise ParserError(f"{self.cur_line}\nExpected opcode")
-        if self.cur_pos < len(self.cur_line) and self.cur_line[self.cur_pos] == ":":
+        if self.in_bounds() and self.cur_char() == ":":
             # Not an opcode was actually a label
             self.cur_pos += 1
             self.set_label(opcode)
 
-            if self.cur_pos >= len(self.cur_line):
+            if not self.in_bounds():
                 return None
             self.error_check(" ")
             opcode = self.get_token()
@@ -75,22 +88,21 @@ class LexicalAnalyzer:
             except ImmediateError:
                 raise ParserError(f"Invalid immediate value: {val}. Must be less than 4096") 
             
-            if expec in PARAM_TOKENS:
-                params.append(t)
+            params.append(t)
 
             if expec == TTS.COMMA:
                 self.error_check(" ")
 
         # If there were more characters than expected
-        if self.cur_pos < len(self.cur_line):
+        if self.in_bounds():
             raise ParserError(f"Unexpected token: {self.cur_line[self.cur_pos:]}")
 
         return params
 
     def get_token(self):
         s = ""
-        while self.cur_pos < len(self.cur_line):
-            c = self.cur_line[self.cur_pos]
+        while self.in_bounds():
+            c = self.cur_char()
 
             if c not in ALLOWED_CHARS:
                 if c in SINGLE_CHAR_TOKENS and s == "":
@@ -107,12 +119,17 @@ class LexicalAnalyzer:
     def get_instruction(self):
         # Parser is non-case sensitive
         og_line = self.file.readline().lower()
-        if og_line == "":
+
+        self.cur_line = og_line
+
+        if self.cur_line == "":
             self.eof = True
             return None
         
+        self.remove_comments()
+
         # Removes excess spaces
-        self.cur_line = " ".join(og_line.split())
+        self.cur_line = " ".join(self.cur_line.split())
 
         # Blank line but not end of file
         if self.cur_line == "":

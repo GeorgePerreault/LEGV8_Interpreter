@@ -54,6 +54,12 @@ class Debugger():
         self.driver.reg_dump()
         self.get_action()
 
+    def handle_h(self):
+        print("----------HELP----------")
+        print("Valid commands: \n\ncontinue / c\nnext / n\nlist / l\nmode / m")
+        print("------------------------")
+        self.get_action()
+
     def debug(self):
         self.driver.setup()
         inst = self.driver.cur_inst()
@@ -68,6 +74,10 @@ class Debugger():
             
             if inst and self.action == "m":
                 self.handle_m()
+                continue
+
+            if inst and self.action == "h":
+                self.handle_h()
                 continue
             
             # Beacuse continue is none of these, it will cause the program to run un-interrupted 
