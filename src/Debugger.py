@@ -84,7 +84,11 @@ class Debugger():
 
             self.driver.exe_next()
 
-            inst = self.driver.cur_inst()
+            if self.driver.active():
+                inst = self.driver.cur_inst()
+            else:
+                inst = None
+                
             if inst and inst.b_point:
                 # Stop on breakpoints
                 self.act_before_broke = self.action
