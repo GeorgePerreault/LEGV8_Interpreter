@@ -54,7 +54,7 @@ class CPU:
         ret = self.op.execute(*self.params)
         
         # op.s says if it was a set flag instruction
-        # ret should always be a len(2) tuple if true
+        # ret should always exist if true but I check anyway
         if self.op.s and ret:
             self.set_flags(ret)
 
