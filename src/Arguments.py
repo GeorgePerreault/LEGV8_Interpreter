@@ -8,9 +8,16 @@ class Arguments:
 
         if len(args) < 2:
             print("Improper usage. Please pass a file to run.")
-            exit()
+            exit(1)
 
         self.file = args[1]
+
+        try:
+            with open(self.file, "r"):
+                pass
+        except FileNotFoundError:
+            print(f"File: '{self.file}.txt' was not found")
+            exit(1)
 
         for mode in {"dec", "udec", "hex", "bin"}:
             if f"-{mode}" in args:
