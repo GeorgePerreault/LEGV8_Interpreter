@@ -16,7 +16,7 @@ class Arguments:
             with open(self.file, "r"):
                 pass
         except FileNotFoundError:
-            print(f"File: '{self.file}' was not found")
+            print(f"File: '{self.file}.txt' was not found")
             exit(1)
 
         for mode in {"dec", "udec", "hex", "bin"}:
