@@ -6,14 +6,19 @@ class Debugger():
     def __init__(self, driver):
         self.driver = driver
         self.action = "c"
-        self.spread = 3
+        self.param = None
         self.act_before_broke = None
         self.dcp = DebugCommandParser()
 
     def set_dcp_vals(self, ret):
         self.action = ret[0]
-        self.driver.mode = ret[1] if ret[1] else self.driver.mode
-        self.spread = ret[2]
+        if self.action == "m":
+            self.driver.mode = ret[1]
+
+        if self.action in {"l", "p"}:
+            self.param = ret[1]
+        else:
+            self.param = None
 
     # Returns a bool of whether or not the command worked
     def input_ask(self):
@@ -46,7 +51,7 @@ class Debugger():
 
     # List command lists nearby lines
     def handle_l(self):
-        self.driver.print_cur(spread=self.spread if self.spread else 3)
+        self.driver.print_cur(spread=self.param if self.param else 3)
         self.get_action()
 
     # Mode command changes the current print mode
@@ -58,6 +63,10 @@ class Debugger():
         print("----------HELP----------")
         print("Valid commands: \n\ncontinue / c\nnext / n\nlist / l\nmode / m")
         print("------------------------")
+        self.get_action()
+
+    def handle_p(self):
+        self.driver.mem_dump(address=self.param)
         self.get_action()
 
     def debug(self):
@@ -80,6 +89,10 @@ class Debugger():
                 self.handle_h()
                 continue
             
+            if inst and self.action == "p":
+                self.handle_p()
+                continue
+
             # Beacuse continue is none of these, it will cause the program to run un-interrupted 
 
             self.driver.exe_next()

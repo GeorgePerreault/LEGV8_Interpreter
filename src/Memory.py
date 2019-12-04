@@ -1,3 +1,5 @@
+from src.UsefulFuncs import num_as_str
+
 class Memory:
 
     # A dictionary is used to mimic an array of size 2^64
@@ -5,6 +7,16 @@ class Memory:
         self.memory = {}
         self.bounds = bounds
 
+    def print(self, address=None, mode="dec"):
+        if address:
+            self.__single_print(address, mode)
+        else:
+            for i in sorted(self.memory.keys()):
+                self.__single_print(mode, i)
+    
+    def __single_print(self, address, mode):
+        print(f"{num_as_str(address, mode)}: {self.memory[address]}")
+            
     def __repr__(self):
         return str(self.memory)
 
