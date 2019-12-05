@@ -31,6 +31,10 @@ class BitNumber:
             count += 1
             n >>= 1
 
+    def __gt__(self, other):
+        x, y = self.__getxy(other)
+        return x > y
+
     def __lshift__(self, other):
         x, y = self.__getxy(other)
         return BitNumber(x << y)

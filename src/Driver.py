@@ -42,8 +42,8 @@ class Driver:
             row_size = 2 if self.mode == "bin" else 4
         self.cpu.reg_dump(mode=self.mode, row_size=row_size)
 
-    def mem_dump(self, address=None):
-        self.cpu.mem_dump(address=address, mode=self.mode)
+    def mem_dump(self, register_num=None):
+        self.cpu.mem_dump(register_num=register_num, mode=self.mode)
 
     # Fills out self.code and self.labels by parsing the input 
     # Must be run before execution

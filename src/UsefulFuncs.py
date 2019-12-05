@@ -1,8 +1,8 @@
 def num_as_str(n, mode):
     s = ""
-    
+
     if mode == "dec":
-        if str(n)[0] == 1:
+        if n > 0x7FFFFFFFFFFFFFFF:
             s += f"-{0xFFFFFFFFFFFFFFFF - n + 1:019}"
         else:
             s += f"+{n:019}"

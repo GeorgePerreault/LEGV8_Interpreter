@@ -66,7 +66,7 @@ class Debugger():
         self.get_action()
 
     def handle_p(self):
-        self.driver.mem_dump(address=self.param)
+        self.driver.mem_dump(register_num=self.param)
         self.get_action()
 
     def debug(self):
