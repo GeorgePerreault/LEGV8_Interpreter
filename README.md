@@ -27,6 +27,7 @@ ADD X2, X0, X1
 ```
 
 Valid commands when debugging are:
+(Parts of the command in parenthesis are optional)
 
 - ```continue``` / ```c``` : Continues execution of the program 
 - ```next``` / ```n``` : Executes until the next instruction
