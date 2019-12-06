@@ -30,6 +30,7 @@ Valid commands when debugging are:
 
 - ```continue``` / ```c``` : Continues execution of the program 
 - ```next``` / ```n``` : Executes until the next instruction
-- ```list x``` / ```l x``` : Shows x lines above and below the current instruction
+- ```list x``` / ```l (x)``` : Shows 3 lines above and below the current instruction or instruction x
 - ```mode x``` / ```m x``` : Changes the output mode to x (x can  be ```dec```, ```udec```, ```hex```, or ```bin```)
+- ```print``` / ```p (x)``` : Prints the current memory contents aligned to an 8 byte grid, or the value at the address held in register x
 - ```help``` / ```h``` : Displays these commands (In case you forget)

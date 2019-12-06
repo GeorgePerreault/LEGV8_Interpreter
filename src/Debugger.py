@@ -1,5 +1,6 @@
 from src.Driver import Driver
-from src.DebugCommandParser import *
+from src.DebugCommandParser import DebugCommandParser
+from src.Exceptions import DebugCommandError
 
 class Debugger():
 
