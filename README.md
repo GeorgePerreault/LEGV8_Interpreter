@@ -6,7 +6,7 @@ python ./LEGv8.py input_file
 
 Make sure the ```src``` folder is in the same directory as ```LEGv8.py```
 
-You can pass ```-udec``` ```-hex``` or ```-bin``` as an argument to the program to change register output to that format
+You can pass ```-udec``` ```-hex``` or ```-bin``` as an argument to the program to change number output to that format
 
 This parser is not case sensitive, so feel free to give your shift key a rest when writing your assembly
 
@@ -15,7 +15,7 @@ This parser is not case sensitive, so feel free to give your shift key a rest wh
 Run the program with the ```-d``` flag to run in debug mode
 
 ```
-python ./LEGv8.py input -d
+python ./LEGv8.py input_file -d
 ```
 
 You can place breakpoints by adding an '@' to the end of a non-blank line
