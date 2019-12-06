@@ -26,7 +26,7 @@ ADDI X1, XZR, #2    @   //Execution will stop at this line
 ADD X2, X0, X1
 ```
 
-Valid commands when debugging are:
+Valid commands when debugging are:  
 (Parts of the command in parenthesis are optional)
 
 - ```continue``` / ```c``` : Continues execution of the program 
