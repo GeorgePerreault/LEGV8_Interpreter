@@ -69,7 +69,7 @@ class Driver:
 
             self.code.append(inst)
 
-            if lex.has_label:
+            if inst and inst.label:
                 self.labels[lex.get_label()] = line_num
 
     # If there's a main label we start there, otherwise at line 1

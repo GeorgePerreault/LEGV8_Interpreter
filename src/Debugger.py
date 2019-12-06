@@ -66,7 +66,7 @@ class Debugger():
 
     def handle_h(self):
         print("----------HELP----------")
-        print("Valid commands: \n\ncontinue / c\nnext / n\nlist / l\nmode / m")
+        print("Valid commands: \n\ncontinue / c\nnext / n\nlist / l\nmode / m\nprint / p")
         print("------------------------")
         self.get_action()
 

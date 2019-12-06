@@ -4,8 +4,9 @@ from src.Token import Token, TOKEN_TYPE_NAMES
 from src.InstructionSet import INSTRUCTION_SET, TTS, PARAMS
 from src.Exceptions import ParserError, TokenError, ImmediateError
 
-ALLOWED_CHARS = {*ascii_letters, "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."}
+# ALLOWED_CHARS = {*ascii_letters, "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."}
 SINGLE_CHAR_TOKENS = {",", "[", "]", "#"}
+HAULT_CHARS = {*SINGLE_CHAR_TOKENS, " ", "\t", "\n", ":"}
 PARAM_TOKENS = {TTS.REGISTER, TTS.IMMEDIATE, TTS.LABEL}
 
 class LexicalAnalyzer:
@@ -13,20 +14,19 @@ class LexicalAnalyzer:
         self.file = open(file, "r")
         self.cur_pos = 0
         self.cur_line = ""
-        self.cur_label = ""
-        self.has_label = False
+        self.cur_label = None
         self.eof = False
 
     def get_label(self):
-        if not self.has_label:
+        if not self.cur_label:
             raise Exception("Tried to get non-existent label")
-        self.has_label = False
-        return self.cur_label
+        ret = self.cur_label
+        self.cur_label = None
+        return ret
 
     def set_label(self, label):
-        if self.has_label:
+        if self.cur_label:
             raise Exception("Overwrote existing label")
-        self.has_label = True
         self.cur_label = label
 
     def in_bounds(self):
@@ -42,12 +42,12 @@ class LexicalAnalyzer:
             return True
         return False
 
-    # Raises an error if the current character isn't match
-    def error_check(self, match):
+    # Raises an error if the current character isn't a space
+    def error_check_space(self, after):
         if not self.in_bounds():
-            raise ParserError(f"{self.cur_line}\nInvalid syntax. Expected: '{match}' but line was empty")
-        if self.cur_char() != match:
-            raise ParserError(f"{self.cur_line}\nInvalid syntax. Expected: '{match}' but got {self.cur_char()}")
+            raise ParserError(f"{self.cur_line}\nInvalid syntax. Expected more after {after}, but line was empty")
+        if self.cur_char() != " ":
+            raise ParserError(f"{self.cur_line}\nInvalid syntax. Expected a space after {after}, but got {self.cur_char()}")
         self.cur_pos += 1
 
     # Returns true if there's a breakpoint and also removes it from the line
@@ -61,7 +61,7 @@ class LexicalAnalyzer:
     def get_opcode(self):
         opcode = self.get_token()
         if opcode == "":
-            raise ParserError(f"{self.cur_line}\nExpected opcode")
+            return None
         if self.in_bounds() and self.cur_char() == ":":
             # Not an opcode was actually a label
             self.cur_pos += 1
@@ -69,7 +69,7 @@ class LexicalAnalyzer:
 
             if not self.in_bounds():
                 return None
-            self.error_check(" ")
+            self.error_check_space("colon")
             opcode = self.get_token()
 
         return opcode
@@ -86,12 +86,12 @@ class LexicalAnalyzer:
             except TokenError:
                 raise ParserError(f"Expected {TOKEN_TYPE_NAMES[expec]} but got: {val}")
             except ImmediateError:
-                raise ParserError(f"Invalid immediate value: {val}. Must be less than 4096") 
+                raise ParserError(f"Invalid immediate value: {val}. Must be between 0 and 4095") 
             
             params.append(t)
 
             if expec == TTS.COMMA:
-                self.error_check(" ")
+                self.error_check_space("comma")
 
         # If there were more characters than expected
         if self.in_bounds():
@@ -101,15 +101,17 @@ class LexicalAnalyzer:
 
     def get_token(self):
         s = ""
+
+        if self.in_bounds():
+            c = self.cur_char()
+            if c in SINGLE_CHAR_TOKENS:
+                self.cur_pos += 1
+                return c
+
         while self.in_bounds():
             c = self.cur_char()
-
-            if c not in ALLOWED_CHARS:
-                if c in SINGLE_CHAR_TOKENS and s == "":
-                    self.cur_pos += 1
-                    return c
+            if c in HAULT_CHARS:
                 break
-
             s += c
             self.cur_pos += 1
 
@@ -119,7 +121,6 @@ class LexicalAnalyzer:
     def get_instruction(self):
         # Parser is non-case sensitive
         og_line = self.file.readline().lower()
-
         self.cur_line = og_line
 
         if self.cur_line == "":
@@ -141,7 +142,7 @@ class LexicalAnalyzer:
         opcode = self.get_opcode()
         if not opcode:
             return Instruction(None, None, label=self.cur_label, b_point=b_point)
-        self.error_check(" ")
+        self.error_check_space("opcode")
 
         try:
             expected_params = INSTRUCTION_SET[opcode][PARAMS]
@@ -153,6 +154,4 @@ class LexicalAnalyzer:
         except (ParserError, TokenError) as e:
             raise ParserError(f"{og_line.strip()}\n{e}")
     
-        if self.has_label:
-            return Instruction(opcode, params, label=self.cur_label, b_point=b_point)
-        return Instruction(opcode, params, b_point=b_point)
+        return Instruction(opcode, params, label=self.cur_label, b_point=b_point)
