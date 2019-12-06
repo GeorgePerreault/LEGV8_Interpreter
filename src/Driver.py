@@ -24,15 +24,23 @@ class Driver:
         for i in range(start, stop):
             self.__print_inst(i, self.code[i])
 
-    def cur_inst(self):
-        return self.code[self.cpu.pc]
+    def get_inst(self, inst):
+        return self.code[inst]
 
-    # Prints the current instruction along with spread instructions above and below it 
-    def print_cur(self, spread=None):
+    def cur_inst(self):
+        return self.get_inst(self.cpu.pc)
+
+    # Prints an instruction along with spread instructions above and below it 
+    def print_inst(self, inst, spread=None):
+        if inst == 0 or inst >= len(self.code):
+            return
         if spread:
-            self.__print_range(self.cpu.pc - spread, self.cpu.pc + spread + 1)
+            self.__print_range(inst - spread, inst + spread + 1)
         else:
-            self.__print_inst(self.cpu.pc, self.cur_inst())
+            self.__print_inst(inst, self.get_inst(inst))
+
+    def print_cur(self, spread=None):
+        self.print_inst(self.cpu.pc, spread=spread)
 
     def code_dump(self):
         self.__print_range(0, len(self.code))

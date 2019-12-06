@@ -1,4 +1,4 @@
-from src.Register import ZERO_REG, LINK_REG, FRAME_POINTER, STACK_POINTER, special_reg_names
+from src.UsefulFuncs import ZERO_REG, LINK_REG, FRAME_POINTER, STACK_POINTER, special_reg_names, get_reg_num_from_str
 from src.InstructionSet import TOKEN_TYPE_NAMES, TTS
 from src.Exceptions import TokenError, ImmediateError
 
@@ -12,29 +12,11 @@ class Token:
         self.l_val = None
         
         if expec == TTS.REGISTER:
-            if val[0] == "x":                
-
-                if val[1:] == "zr":
-                    self.r_val = ZERO_REG
-                    self.type = TTS.REGISTER
-                    return
-
-                try:
-                    self.r_val = int(val[1:])
-                    self.type = TTS.REGISTER
-                    return
-                except ValueError:
-                    raise TokenError(f"Invalid register value: {val}")
-
-            elif val in ["lr", "fp", "sp"]:
+            self.r_val = get_reg_num_from_str(val)
+            if self.r_val is not None:
                 self.type = TTS.REGISTER
-                if val == "lr":
-                    self.r_val = LINK_REG
-                elif val == "fp":
-                    self.r_val = FRAME_POINTER
-                elif val == "sp":
-                    self.r_val = STACK_POINTER
                 return
+            raise TokenError(f"Invalid register value: {val}")
 
         if expec == TTS.IMMEDIATE:
             try:

@@ -1,4 +1,5 @@
 from src.Exceptions import DebugCommandError
+from src.UsefulFuncs import get_reg_num_from_str
 
 class DebugCommandParser:
 
@@ -9,10 +10,14 @@ class DebugCommandParser:
 
 
     def parse_command(self, s):        
-        s = s.split()
+        n = s.find(" ")
 
-        action = s[0]
-        param = s[1] if len(s) == 2 else None
+        if n != -1:
+            action = s[:n]
+            param = s[n+1:]
+        else:
+            action = s
+            param = None
 
         if action not in self.ALLOWED_ACTIONS:
             raise DebugCommandError(f"Invalid command: {action}")
@@ -35,12 +40,11 @@ class DebugCommandParser:
                 raise DebugCommandError(f"Invalid parameter for command mode: {param}")
 
         elif action == "p":
-            if param[0].lower() == "x" and len(param) > 1:
-                reg = param[1:]
-                try:
-                    param = int(reg)
-                except ValueError:
+            if param:
+                reg = get_reg_num_from_str(param)
+                if reg is None:
                     raise DebugCommandError(f"Invalid register value for command print: {param}")
+                param = reg
             else:
                 raise DebugCommandError(f"Invalid parameter for command print: {param}")
 

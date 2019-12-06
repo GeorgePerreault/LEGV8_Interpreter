@@ -9,6 +9,12 @@ literally_just_getting_rid_of_the_wildcard_import_warning = Op()
 FUNC = 0
 PARAMS = 1
 
+# Instead of hardcoding
+ZERO_REG = 31
+LINK_REG = 30
+FRAME_POINTER = 29
+STACK_POINTER = 28
+
 # Token type constants
 class TTS:
     COMMA = 0

@@ -76,7 +76,7 @@ class CPU:
         print(s)
             
     def mem_dump(self, register_num=None, mode="dec"):
-        address = self.registers[register_num].value if register_num else None
+        address = self.registers[register_num].value if register_num is not None else None
         self.memory.print(address=address, mode=mode)
 
     def __repr__(self):

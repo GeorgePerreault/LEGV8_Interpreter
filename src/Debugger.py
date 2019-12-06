@@ -51,7 +51,11 @@ class Debugger():
 
     # List command lists nearby lines
     def handle_l(self):
-        self.driver.print_cur(spread=self.param if self.param else 3)
+        print(self.param)
+        if self.param:
+            self.driver.print_inst(self.param, spread=3)
+        else:
+            self.driver.print_cur(spread=3)
         self.get_action()
 
     # Mode command changes the current print mode
@@ -66,6 +70,7 @@ class Debugger():
         self.get_action()
 
     def handle_p(self):
+        print("----Memory----")
         self.driver.mem_dump(register_num=self.param)
         self.get_action()
 

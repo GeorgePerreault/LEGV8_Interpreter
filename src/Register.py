@@ -1,21 +1,6 @@
 from src.BitNumber import BitNumber
-from src.UsefulFuncs import num_as_str
-
-ZERO_REG = 31
-LINK_REG = 30
-FRAME_POINTER = 29
-STACK_POINTER = 28
-
-
-def special_reg_names(i):
-    if i == STACK_POINTER:
-        return "SP"
-    if i == FRAME_POINTER:
-        return "FP"
-    if i == LINK_REG:
-        return "LR"
-    if i == ZERO_REG:
-        return "XZR"
+from src.UsefulFuncs import num_as_str, special_reg_names
+from src.InstructionSet import ZERO_REG
 
 class Register:
 
