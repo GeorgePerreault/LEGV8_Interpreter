@@ -27,5 +27,5 @@ class Arguments:
             self.debug = True
 
         if "-help" in args:
-            print("Please see the README, I'm too lazy to restate it here")
+            print("Please see the README; I'm too lazy to restate it here")
             exit()
